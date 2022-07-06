@@ -11,7 +11,9 @@
   },
   "dependencies": {
     "react": "17.0.2",
-    "react-native": "0.68.2"
+    "react-native": "0.68.2",
+    "react-native-device-info": "^9.0.2",
+    "react-native-prompt-android": "^1.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",

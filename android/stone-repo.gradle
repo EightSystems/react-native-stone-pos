@@ -1,0 +1,15 @@
+allprojects {
+  String token = rootProject.ext.has('packageCloudToken') ? rootProject.ext.get('packageCloudToken') : (
+    project.properties.containsKey('StonePos_packageCloudToken') ?
+      project.properties['StonePos_packageCloudToken'] : System.getenv('StonePos_packageCloudToken')
+  )
+
+  if ( token == null || token.isEmpty() ) {
+    throw new RuntimeException("You need to set the StonePos_packageCloudToken either in gradle.properties or in your env")
+  }
+
+  repositories {
+    maven { url "https://packagecloud.io/priv/${token}/stone/pos-android/maven2" }
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+  }
+}

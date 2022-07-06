@@ -1,10 +1,12 @@
+apply from:"./stone-repo.gradle"
+
 buildscript {
   // Buildscript is evaluated before everything else so we can't use getExtOrDefault
   def kotlin_version = rootProject.ext.has('kotlinVersion') ? rootProject.ext.get('kotlinVersion') : project.properties['StonePos_kotlinVersion']
 
   repositories {
-      google()
-      mavenCentral()
+    google()
+    mavenCentral()
   }
 
   dependencies {
@@ -18,19 +20,19 @@ def isNewArchitectureEnabled() {
   return rootProject.hasProperty("newArchEnabled") &&  rootProject.getProperty("newArchEnabled") == "true"
 }
 
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
-
-if (isNewArchitectureEnabled()) {
-  apply plugin: 'com.facebook.react'
-}
-
 def getExtOrDefault(name) {
   return rootProject.ext.has(name) ? rootProject.ext.get(name) : project.properties['StonePos_' + name]
 }
 
 def getExtOrIntegerDefault(name) {
   return rootProject.ext.has(name) ? rootProject.ext.get(name) : (project.properties['StonePos_' + name]).toInteger()
+}
+
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+
+if (isNewArchitectureEnabled()) {
+  apply plugin: 'com.facebook.react'
 }
 
 android {
@@ -56,6 +58,8 @@ android {
     targetCompatibility JavaVersion.VERSION_1_8
   }
 }
+
+def token = rootProject.ext.has('packageCloudToken') ? rootProject.ext.get('packageCloudToken') : project.properties['StonePos_packageCloudToken']
 
 repositories {
   mavenCentral()
@@ -120,19 +124,29 @@ repositories {
   }
 
   if (!found) {
-    throw new GradleException(
+    throw new RuntimeException(
       "${project.name}: unable to locate React Native android sources. " +
       "Ensure you have you installed React Native as a dependency in your project and try again."
     )
   }
 }
 
+def stone_sdk_version = "4.1.1"
 def kotlin_version = getExtOrDefault('kotlinVersion')
 
 dependencies {
     //noinspection GradleDynamicVersion
   implementation "com.facebook.react:react-native:+"
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+
+  implementation "br.com.stone:stone-sdk:$stone_sdk_version"
+  debugImplementation "br.com.stone.sdk.android:envconfig:$stone_sdk_version"
+
+  implementation "br.com.stone:stone-sdk-posandroid:$stone_sdk_version"
+  implementation "br.com.stone:stone-sdk-posandroid-ingenico:$stone_sdk_version"
+  implementation "br.com.stone:stone-sdk-posandroid-sunmi:$stone_sdk_version"
+  implementation "br.com.stone:stone-sdk-posandroid-gertec:$stone_sdk_version"
+  implementation 'com.izettle:html2bitmap:1.9'
 // From node_modules
 }
 
