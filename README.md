@@ -18,7 +18,7 @@ Add a variable called `StonePos_packageCloudToken` at your `gradle.properties` i
 
 #### Install Steps:
 
-````sh
+```sh
 npm install react-native-stone-pos
 ```
 
