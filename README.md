@@ -53,7 +53,7 @@ Manifest merger failed : Attribute application@allowBackup value=(false) from An
 
 So, as per the suggestion, you can add `tools:replace="android:allowBackup"` to your `<application>` element at your `android/app/src/main/AndroidManifest.xml` file, like this:
 
-```
+```xml
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
   package="com.yourapp.here">
 
@@ -93,7 +93,7 @@ More than one file was found with OS independent path 'META-INF/client_release.k
 
 Try modifying `android/app/build.gradle` and add this inside the `android` section:
 
-```
+```gradle
 packagingOptions {
   exclude 'META-INF/api_release.kotlin_module'
   exclude 'META-INF/client_release.kotlin_module'
@@ -103,11 +103,20 @@ packagingOptions {
 ## Usage
 
 ```js
-import StonePOS from 'react-native-stone-pos';
+import * as StonePOS from 'react-native-stone-pos';
 
 // ...
 
-const result = await StonePOS.initSDK('My Awesome App');
+const isRunningInPOS = StonePOS.IS_RUNNING_IN_POS;
+const activationResult = await StonePOS.initSDK('My Awesome App');
+
+if (!isRunningInPos) {
+  //Ask user to select the bluetooth pinpad (use any library you like), and then you can connect using:
+  const pinpadConnectResult = await StonePOS.connectToPinPad(
+    'My beauty pinpad',
+    '00:11:22:33:44'
+  );
+}
 ```
 
 ## Contributing
