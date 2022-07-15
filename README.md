@@ -8,13 +8,20 @@ Stone has a private packageCloud repository, so we need to have your token befor
 
 So you have two options:
 
-### Environment variable
+### Environment variable / Project properties
 
-Add a environment variable called `StonePos_packageCloudToken` to your environment with the token they gave you.
+We support both options, as adding the variables to your `gradle.properties` in your `android` folder, or setting it as a global environment variable. (This is useful when you are building it from CI)
 
-### Project Properties
+The most important variable you need is: `StonePos_packageCloudToken`. This variable is used to authenticate with Stone private package Cloud repo, so we can download our dependencies.
 
-Add a variable called `StonePos_packageCloudToken` at your `gradle.properties` in your `android` folder with the token they gave you.
+Other variables you might want:
+
+| Name                     | Default Value | Description                                                                                                                                                         |
+| ------------------------ | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| StonePos_posMode         | pos           | Set this to anything other than `pos` to remove the `HAL` dependencies all together, this is useful if you are building an app to mobile devices other than the POS |
+| StonePos_includeIngenico | true          | Set this to anything other than `true` to remove the `Ingenico` hal dependencies                                                                                    |
+| StonePos_includeSunmi    | true          | Set this to anything other than `true` to remove the `Sunmi` hal dependencies                                                                                       |
+| StonePos_includeGertec   | true          | Set this to anything other than `true` to remove the `Gertec` hal dependencies                                                                                      |
 
 #### Install Steps:
 
@@ -96,12 +103,12 @@ packagingOptions {
 ## Usage
 
 ```js
-import StonePOS from "react-native-stone-pos";
+import StonePOS from 'react-native-stone-pos';
 
 // ...
 
 const result = await StonePOS.initSDK('My Awesome App');
-````
+```
 
 ## Contributing
 

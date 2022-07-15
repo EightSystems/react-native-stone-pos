@@ -111,7 +111,7 @@ class PrintHtmlInPOSPrinter(
 
           transactionProvider.execute()
         } else {
-          throw CodedException("101", "Couldnt get bitmap from HTML")
+          throw CodedException("101", "Couldn't get bitmap from HTML")
         }
       }
     }

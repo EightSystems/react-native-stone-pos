@@ -59,8 +59,6 @@ android {
   }
 }
 
-def token = rootProject.ext.has('packageCloudToken') ? rootProject.ext.get('packageCloudToken') : project.properties['StonePos_packageCloudToken']
-
 repositories {
   mavenCentral()
   google()
@@ -141,14 +139,13 @@ dependencies {
 
   implementation "br.com.stone:stone-sdk:$stone_sdk_version"
   debugImplementation "br.com.stone.sdk.android:envconfig:$stone_sdk_version"
-
   implementation "br.com.stone:stone-sdk-posandroid:$stone_sdk_version"
-  implementation "br.com.stone:stone-sdk-posandroid-ingenico:$stone_sdk_version"
-  implementation "br.com.stone:stone-sdk-posandroid-sunmi:$stone_sdk_version"
-  implementation "br.com.stone:stone-sdk-posandroid-gertec:$stone_sdk_version"
+
   implementation 'com.izettle:html2bitmap:1.9'
 // From node_modules
 }
+
+apply from:"./dynamic-hal.gradle"
 
 if (isNewArchitectureEnabled()) {
   react {
