@@ -4,6 +4,7 @@ import com.facebook.react.bridge.Arguments
 import com.facebook.react.bridge.WritableArray
 import com.facebook.react.bridge.WritableMap
 
+@Suppress("UNCHECKED_CAST")
 fun writableMapOf(vararg values: Pair<String, *>): WritableMap {
   val map = Arguments.createMap()
   for ((key, value) in values) {
@@ -23,6 +24,7 @@ fun writableMapOf(vararg values: Pair<String, *>): WritableMap {
   return map
 }
 
+@Suppress("UNCHECKED_CAST")
 fun writableMapFrom(values: Map<String, *>): WritableMap {
   val map = Arguments.createMap()
   for ((key, value) in values.toList().iterator()) {
@@ -42,6 +44,7 @@ fun writableMapFrom(values: Map<String, *>): WritableMap {
   return map
 }
 
+@Suppress("UNCHECKED_CAST")
 fun writableArrayFrom(values: List<*>): WritableArray {
   val array = Arguments.createArray()
   for (value in values) {
@@ -61,6 +64,7 @@ fun writableArrayFrom(values: List<*>): WritableArray {
   return array
 }
 
+@Suppress("UNCHECKED_CAST")
 fun writableArrayOf(vararg values: Any?): WritableArray {
   val array = Arguments.createArray()
   for (value in values) {

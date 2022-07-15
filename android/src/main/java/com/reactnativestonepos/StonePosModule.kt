@@ -38,12 +38,12 @@ class StonePosModule(reactContext: ReactApplicationContext) :
   }
 
   @ReactMethod
-  fun addListener(type: String?) {
+  fun addListener(@Suppress("UNUSED_PARAMETER") type: String?) {
     // Keep: Required for RN built in Event Emitter Calls.
   }
 
   @ReactMethod
-  fun removeListeners(type: Int?) {
+  fun removeListeners(@Suppress("UNUSED_PARAMETER") type: Int?) {
     // Keep: Required for RN built in Event Emitter Calls.
   }
 

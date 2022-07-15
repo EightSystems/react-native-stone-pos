@@ -37,8 +37,7 @@ class SendTransactionReceiptMail(
         throw CodedException("401", "You need to activate the terminal first")
       }
 
-      val transactionDAO = TransactionDAO(reactApplicationContext)
-      val transactionObject = transactionDAO.findTransactionWithAtk(transactionAtk)
+      val transactionObject = TransactionDAO(reactApplicationContext).findTransactionWithAtk(transactionAtk)
 
       if (transactionObject != null) {
         val transactionProvider = SendEmailTransactionProvider(
@@ -105,10 +104,9 @@ class SendTransactionReceiptMail(
 
         transactionProvider.connectionCallback = object : StoneActionCallback {
           override fun onSuccess() {
-            val transactionDAO = TransactionDAO(reactApplicationContext)
             try {
               val trx =
-                transactionDAO.findTransactionWithAtk(transactionObject.acquirerTransactionKey)
+                TransactionDAO(reactApplicationContext).findTransactionWithAtk(transactionObject.acquirerTransactionKey)
               if (trx != null) {
                 promise.resolve(
                   ConversionHelpers.convertTransactionToWritableMap(
