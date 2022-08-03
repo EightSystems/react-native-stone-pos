@@ -81,14 +81,18 @@ class StonePosModule(reactContext: ReactApplicationContext) :
     useDefaultUI: Boolean,
     promise: Promise
   ) {
-    ActivateDeactivateCode(reactApplicationContext, currentActivity).executeAction(
-      isActivationAction = true,
-      stoneCode,
-      dialogMessage,
-      dialogTitle,
-      useDefaultUI,
-      promise
-    )
+    try {
+      ActivateDeactivateCode(reactApplicationContext, currentActivity).executeAction(
+        isActivationAction = true,
+        stoneCode,
+        dialogMessage,
+        dialogTitle,
+        useDefaultUI,
+        promise
+      )
+    } catch (e: Exception) {
+      promise.reject(e)
+    }
   }
 
   @ReactMethod
@@ -99,21 +103,29 @@ class StonePosModule(reactContext: ReactApplicationContext) :
     useDefaultUI: Boolean,
     promise: Promise
   ) {
-    ActivateDeactivateCode(reactApplicationContext, currentActivity).executeAction(
-      isActivationAction = false,
-      stoneCode,
-      dialogMessage,
-      dialogTitle,
-      useDefaultUI,
-      promise
-    )
+    try {
+      ActivateDeactivateCode(reactApplicationContext, currentActivity).executeAction(
+        isActivationAction = false,
+        stoneCode,
+        dialogMessage,
+        dialogTitle,
+        useDefaultUI,
+        promise
+      )
+    } catch (e: Exception) {
+      promise.reject(e)
+    }
   }
 
   @ReactMethod
   fun getActivatedCodes(promise: Promise) {
-    ActivateDeactivateCode(reactApplicationContext, currentActivity).executeGetActivatedCodes(
-      promise
-    )
+    try {
+      ActivateDeactivateCode(reactApplicationContext, currentActivity).executeGetActivatedCodes(
+        promise
+      )
+    } catch (e: Exception) {
+      promise.reject(e)
+    }
   }
 
   /**
@@ -122,22 +134,34 @@ class StonePosModule(reactContext: ReactApplicationContext) :
 
   @ReactMethod
   fun getAllTransactionsOrderByIdDesc(promise: Promise) {
-    GetTransactions(reactApplicationContext, currentActivity).executeActionOrderByIdDesc(promise)
+    try {
+      GetTransactions(reactApplicationContext, currentActivity).executeActionOrderByIdDesc(promise)
+    } catch (e: Exception) {
+      promise.reject(e)
+    }
   }
 
   @ReactMethod
   fun getLastTransaction(promise: Promise) {
-    GetTransactions(reactApplicationContext, currentActivity).executeActionGetLastTransaction(
-      promise
-    )
+    try {
+      GetTransactions(reactApplicationContext, currentActivity).executeActionGetLastTransaction(
+        promise
+      )
+    } catch (e: Exception) {
+      promise.reject(e)
+    }
   }
 
   @ReactMethod
   fun findTransactionWithAuthorizationCode(authorizationCode: String, promise: Promise) {
-    GetTransactions(
-      reactApplicationContext,
-      currentActivity
-    ).executeFindTransactionWithAuthorizationCode(authorizationCode, promise)
+    try {
+      GetTransactions(
+        reactApplicationContext,
+        currentActivity
+      ).executeFindTransactionWithAuthorizationCode(authorizationCode, promise)
+    } catch (e: Exception) {
+      promise.reject(e)
+    }
   }
 
   @ReactMethod
@@ -145,18 +169,26 @@ class StonePosModule(reactContext: ReactApplicationContext) :
     initiatorTransactionKey: String,
     promise: Promise
   ) {
-    GetTransactions(
-      reactApplicationContext,
-      currentActivity
-    ).executeFindTransactionWithInitiatorTransactionKey(initiatorTransactionKey, promise)
+    try {
+      GetTransactions(
+        reactApplicationContext,
+        currentActivity
+      ).executeFindTransactionWithInitiatorTransactionKey(initiatorTransactionKey, promise)
+    } catch (e: Exception) {
+      promise.reject(e)
+    }
   }
 
   @ReactMethod
   fun findTransactionWithId(transactionId: Int, promise: Promise) {
-    GetTransactions(reactApplicationContext, currentActivity).executeFindTransactionWithId(
-      transactionId,
-      promise
-    )
+    try {
+      GetTransactions(reactApplicationContext, currentActivity).executeFindTransactionWithId(
+        transactionId,
+        promise
+      )
+    } catch (e: Exception) {
+      promise.reject(e)
+    }
   }
 
   /**
@@ -171,13 +203,17 @@ class StonePosModule(reactContext: ReactApplicationContext) :
     progressCallbackEventName: String,
     promise: Promise
   ) {
-    ReversePendingTransactions(reactApplicationContext, currentActivity).executeAction(
-      dialogMessage,
-      dialogTitle,
-      useDefaultUI,
-      progressCallbackEventName,
-      promise
-    )
+    try {
+      ReversePendingTransactions(reactApplicationContext, currentActivity).executeAction(
+        dialogMessage,
+        dialogTitle,
+        useDefaultUI,
+        progressCallbackEventName,
+        promise
+      )
+    } catch (e: Exception) {
+      promise.reject(e)
+    }
   }
 
   @ReactMethod
@@ -189,14 +225,18 @@ class StonePosModule(reactContext: ReactApplicationContext) :
     progressCallbackEventName: String,
     promise: Promise
   ) {
-    VoidTransaction(reactApplicationContext, currentActivity).executeAction(
-      transactionAtk,
-      dialogMessage,
-      dialogTitle,
-      useDefaultUI,
-      progressCallbackEventName,
-      promise
-    )
+    try {
+      VoidTransaction(reactApplicationContext, currentActivity).executeAction(
+        transactionAtk,
+        dialogMessage,
+        dialogTitle,
+        useDefaultUI,
+        progressCallbackEventName,
+        promise
+      )
+    } catch (e: Exception) {
+      promise.reject(e)
+    }
   }
 
   @ReactMethod
@@ -208,14 +248,18 @@ class StonePosModule(reactContext: ReactApplicationContext) :
     progressCallbackEventName: String,
     promise: Promise
   ) {
-    CaptureTransaction(reactApplicationContext, currentActivity).executeAction(
-      transactionAtk,
-      dialogMessage,
-      dialogTitle,
-      useDefaultUI,
-      progressCallbackEventName,
-      promise
-    )
+    try {
+      CaptureTransaction(reactApplicationContext, currentActivity).executeAction(
+        transactionAtk,
+        dialogMessage,
+        dialogTitle,
+        useDefaultUI,
+        progressCallbackEventName,
+        promise
+      )
+    } catch (e: Exception) {
+      promise.reject(e)
+    }
   }
 
   @ReactMethod
@@ -224,11 +268,15 @@ class StonePosModule(reactContext: ReactApplicationContext) :
     progressCallbackEventName: String,
     promise: Promise
   ) {
-    MakeTransaction(reactApplicationContext, currentActivity).executeAction(
-      transactionSetup,
-      progressCallbackEventName,
-      promise
-    )
+    try {
+      MakeTransaction(reactApplicationContext, currentActivity).executeAction(
+        transactionSetup,
+        progressCallbackEventName,
+        promise
+      )
+    } catch (e: Exception) {
+      promise.reject(e)
+    }
   }
 
   @ReactMethod
@@ -243,17 +291,21 @@ class StonePosModule(reactContext: ReactApplicationContext) :
     progressCallbackEventName: String,
     promise: Promise
   ) {
-    SendTransactionReceiptMail(reactApplicationContext, currentActivity).executeAction(
-      transactionAtk,
-      receiptType,
-      toContact,
-      fromContact,
-      dialogMessage,
-      dialogTitle,
-      useDefaultUI,
-      progressCallbackEventName,
-      promise
-    )
+    try {
+      SendTransactionReceiptMail(reactApplicationContext, currentActivity).executeAction(
+        transactionAtk,
+        receiptType,
+        toContact,
+        fromContact,
+        dialogMessage,
+        dialogTitle,
+        useDefaultUI,
+        progressCallbackEventName,
+        promise
+      )
+    } catch (e: Exception) {
+      promise.reject(e)
+    }
   }
 
   @ReactMethod
@@ -265,14 +317,18 @@ class StonePosModule(reactContext: ReactApplicationContext) :
     progressCallbackEventName: String,
     promise: Promise
   ) {
-    FetchTransactionsForCard(reactApplicationContext, currentActivity).executeAction(
-      pinpadMacAddress,
-      dialogMessage,
-      dialogTitle,
-      useDefaultUI,
-      progressCallbackEventName,
-      promise
-    )
+    try {
+      FetchTransactionsForCard(reactApplicationContext, currentActivity).executeAction(
+        pinpadMacAddress,
+        dialogMessage,
+        dialogTitle,
+        useDefaultUI,
+        progressCallbackEventName,
+        promise
+      )
+    } catch (e: Exception) {
+      promise.reject(e)
+    }
   }
 
   /**
@@ -289,15 +345,19 @@ class StonePosModule(reactContext: ReactApplicationContext) :
     progressCallbackEventName: String,
     promise: Promise
   ) {
-    DisplayMessageInPinPad(reactApplicationContext, currentActivity).executeAction(
-      pinpadMessage,
-      pinpadMacAddress,
-      dialogMessage,
-      dialogTitle,
-      useDefaultUI,
-      progressCallbackEventName,
-      promise
-    )
+    try {
+      DisplayMessageInPinPad(reactApplicationContext, currentActivity).executeAction(
+        pinpadMessage,
+        pinpadMacAddress,
+        dialogMessage,
+        dialogTitle,
+        useDefaultUI,
+        progressCallbackEventName,
+        promise
+      )
+    } catch (e: Exception) {
+      promise.reject(e)
+    }
   }
 
   @ReactMethod
@@ -310,15 +370,19 @@ class StonePosModule(reactContext: ReactApplicationContext) :
     progressCallbackEventName: String,
     promise: Promise
   ) {
-    ConnectToPinPad(reactApplicationContext, currentActivity).executeAction(
-      pinpadName,
-      pinpadMacAddress,
-      dialogMessage,
-      dialogTitle,
-      useDefaultUI,
-      progressCallbackEventName,
-      promise
-    )
+    try {
+      ConnectToPinPad(reactApplicationContext, currentActivity).executeAction(
+        pinpadName,
+        pinpadMacAddress,
+        dialogMessage,
+        dialogTitle,
+        useDefaultUI,
+        progressCallbackEventName,
+        promise
+      )
+    } catch (e: Exception) {
+      promise.reject(e)
+    }
   }
 
   /**
@@ -335,16 +399,20 @@ class StonePosModule(reactContext: ReactApplicationContext) :
     progressCallbackEventName: String,
     promise: Promise
   ) {
-    PrintReceiptInPOSPrinter(reactApplicationContext, currentActivity).executeAction(
-      receiptType,
-      transactionAtk,
-      isReprint,
-      dialogMessage,
-      dialogTitle,
-      useDefaultUI,
-      progressCallbackEventName,
-      promise
-    )
+    try {
+      PrintReceiptInPOSPrinter(reactApplicationContext, currentActivity).executeAction(
+        receiptType,
+        transactionAtk,
+        isReprint,
+        dialogMessage,
+        dialogTitle,
+        useDefaultUI,
+        progressCallbackEventName,
+        promise
+      )
+    } catch (e: Exception) {
+      promise.reject(e)
+    }
   }
 
   @ReactMethod
@@ -356,13 +424,17 @@ class StonePosModule(reactContext: ReactApplicationContext) :
     progressCallbackEventName: String,
     promise: Promise
   ) {
-    PrintHtmlInPOSPrinter(reactApplicationContext, currentActivity).executeAction(
-      htmlContent,
-      dialogMessage,
-      dialogTitle,
-      useDefaultUI,
-      progressCallbackEventName,
-      promise
-    )
+    try {
+      PrintHtmlInPOSPrinter(reactApplicationContext, currentActivity).executeAction(
+        htmlContent,
+        dialogMessage,
+        dialogTitle,
+        useDefaultUI,
+        progressCallbackEventName,
+        promise
+      )
+    } catch (e: Exception) {
+      promise.reject(e)
+    }
   }
 }

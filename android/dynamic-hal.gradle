@@ -7,17 +7,17 @@ String posMode = rootProject.ext.has('posMode') ? rootProject.ext.get('posMode')
 
 String includeIngenico = rootProject.ext.has('includeIngenico') ? rootProject.ext.get('includeIngenico') : (
   project.properties.containsKey('StonePos_includeIngenico') ?
-    project.properties['StonePos_includeIngenico'] : (System.getenv('StonePos_includeIngenico') || 'true')
+    project.properties['StonePos_includeIngenico'] : (System.getenv('StonePos_includeIngenico') ? System.getenv('StonePos_includeIngenico') : 'true')
 )
 
 String includeSunmi = rootProject.ext.has('includeSunmi') ? rootProject.ext.get('includeSunmi') : (
   project.properties.containsKey('StonePos_includeSunmi') ?
-    project.properties['StonePos_includeSunmi'] : (System.getenv('StonePos_includeSunmi') || 'true')
+    project.properties['StonePos_includeSunmi'] : (System.getenv('StonePos_includeSunmi') ? System.getenv('StonePos_includeSunmi') : 'true')
 )
 
 String includeGertec = rootProject.ext.has('includeGertec') ? rootProject.ext.get('includeGertec') : (
   project.properties.containsKey('StonePos_includeGertec') ?
-    project.properties['StonePos_includeGertec'] : (System.getenv('StonePos_includeGertec') || 'true')
+    project.properties['StonePos_includeGertec'] : (System.getenv('StonePos_includeGertec') ? System.getenv('StonePos_includeGertec') : 'true')
 )
 
 if ( posMode.isEmpty() ) {
@@ -25,17 +25,17 @@ if ( posMode.isEmpty() ) {
 }
 
 if ( posMode.equalsIgnoreCase('pos') ) {
-  if ( includeIngenico.equalsIgnoreCase('true')) {
+  if ( includeIngenico.equalsIgnoreCase('true') ) {
     dependencies {
       implementation "br.com.stone:stone-sdk-posandroid-ingenico:$stone_sdk_version"
     }
   }
-  if ( includeSunmi.equalsIgnoreCase('true')) {
+  if ( includeSunmi.equalsIgnoreCase('true') ) {
     dependencies {
       implementation "br.com.stone:stone-sdk-posandroid-sunmi:$stone_sdk_version"
     }
   }
-  if ( includeGertec.equalsIgnoreCase('true')) {
+  if ( includeGertec.equalsIgnoreCase('true') ) {
     dependencies {
       implementation "br.com.stone:stone-sdk-posandroid-gertec:$stone_sdk_version"
     }
