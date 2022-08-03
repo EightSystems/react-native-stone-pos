@@ -2,7 +2,7 @@ def stone_sdk_version = "4.1.1"
 
 String posMode = rootProject.ext.has('posMode') ? rootProject.ext.get('posMode') : (
   project.properties.containsKey('StonePos_posMode') ?
-    project.properties['StonePos_posMode'] : (System.getenv('StonePos_posMode') || 'pos')
+    project.properties['StonePos_posMode'] : (System.getenv('StonePos_posMode') ?  System.getenv('StonePos_posMode') : 'pos')
 )
 
 String includeIngenico = rootProject.ext.has('includeIngenico') ? rootProject.ext.get('includeIngenico') : (
