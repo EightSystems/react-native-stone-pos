@@ -1,0 +1,23 @@
+name: Create TypeDoc Documentation
+on:
+  push:
+    branches:
+      - main
+jobs:
+  tsdoc-and-deploy:
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, '[skipdocs]')"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2.3.1
+      - name: Install and Build
+        run: |
+          yarn install
+          yarn example
+          yarn docs
+
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@4.1.1
+        with:
+          branch: gh-pages
+          folder: ./docs
