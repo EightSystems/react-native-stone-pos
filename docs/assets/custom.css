@@ -1,0 +1,83 @@
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-background: var(--light-color-background) !important;
+    --color-background-secondary: var(
+      --light-color-background-secondary
+    ) !important;
+    --color-icon-background: var(--light-color-icon-background) !important;
+    --color-accent: var(--light-color-accent) !important;
+    --color-text: var(--light-color-text) !important;
+    --color-text-aside: var(--light-color-text-aside) !important;
+    --color-link: var(--light-color-link) !important;
+    --color-ts: var(--light-color-ts) !important;
+    --color-ts-interface: var(--light-color-ts-interface) !important;
+    --color-ts-enum: var(--light-color-ts-enum) !important;
+    --color-ts-class: var(--light-color-ts-class) !important;
+    --color-ts-function: var(--light-color-ts-function) !important;
+    --color-ts-namespace: var(--light-color-ts-namespace) !important;
+    --color-ts-private: var(--light-color-ts-private) !important;
+    --color-ts-variable: var(--light-color-ts-variable) !important;
+    --external-icon: var(--light-external-icon) !important;
+    --color-scheme: var(--light-color-scheme) !important;
+  }
+}
+
+:root[data-theme='dark'] {
+  --color-background: var(--light-color-background) !important;
+  --color-background-secondary: var(
+    --light-color-background-secondary
+  ) !important;
+  --color-icon-background: var(--light-color-icon-background) !important;
+  --color-accent: var(--light-color-accent) !important;
+  --color-text: var(--light-color-text) !important;
+  --color-text-aside: var(--light-color-text-aside) !important;
+  --color-link: var(--light-color-link) !important;
+  --color-ts: var(--light-color-ts) !important;
+  --color-ts-interface: var(--light-color-ts-interface) !important;
+  --color-ts-enum: var(--light-color-ts-enum) !important;
+  --color-ts-class: var(--light-color-ts-class) !important;
+  --color-ts-function: var(--light-color-ts-function) !important;
+  --color-ts-namespace: var(--light-color-ts-namespace) !important;
+  --color-ts-private: var(--light-color-ts-private) !important;
+  --color-ts-variable: var(--light-color-ts-variable) !important;
+  --external-icon: var(--light-external-icon) !important;
+  --color-scheme: var(--light-color-scheme) !important;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --hl-0: var(--light-hl-0) !important;
+    --hl-1: var(--light-hl-1) !important;
+    --hl-2: var(--light-hl-2) !important;
+    --hl-3: var(--light-hl-3) !important;
+    --hl-4: var(--light-hl-4) !important;
+    --hl-5: var(--light-hl-5) !important;
+    --hl-6: var(--light-hl-6) !important;
+    --hl-7: var(--light-hl-7) !important;
+    --hl-8: var(--light-hl-8) !important;
+    --hl-9: var(--light-hl-9) !important;
+    --hl-10: var(--light-hl-10) !important;
+    --hl-11: var(--light-hl-11) !important;
+    --hl-12: var(--light-hl-12) !important;
+    --hl-13: var(--light-hl-13) !important;
+    --code-background: var(--light-code-background) !important;
+  }
+}
+
+:root[data-theme='dark'] {
+  --hl-0: var(--light-hl-0) !important;
+  --hl-1: var(--light-hl-1) !important;
+  --hl-2: var(--light-hl-2) !important;
+  --hl-3: var(--light-hl-3) !important;
+  --hl-4: var(--light-hl-4) !important;
+  --hl-5: var(--light-hl-5) !important;
+  --hl-6: var(--light-hl-6) !important;
+  --hl-7: var(--light-hl-7) !important;
+  --hl-8: var(--light-hl-8) !important;
+  --hl-9: var(--light-hl-9) !important;
+  --hl-10: var(--light-hl-10) !important;
+  --hl-11: var(--light-hl-11) !important;
+  --hl-12: var(--light-hl-12) !important;
+  --hl-13: var(--light-hl-13) !important;
+  --code-background: var(--light-code-background) !important;
+}

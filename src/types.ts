@@ -1,3 +1,7 @@
+/**
+ * @since 0.1.7
+ */
+
 export type AddressModelType = {
   distric: String;
   city: String;
@@ -6,6 +10,9 @@ export type AddressModelType = {
   neighborhood: String;
 };
 
+/**
+ * @since 0.1.7
+ */
 export type UserModelType = {
   stoneCode: String;
   merchantName: String;
@@ -14,12 +21,18 @@ export type UserModelType = {
   saleAffiliationKey: String;
 };
 
+/**
+ * @since 0.1.7
+ */
 export type TransactionTypeInfoType = {
   id: Number;
   appLabel: String;
   transTypeEnum: String;
 };
 
+/**
+ * @since 0.1.7
+ */
 export type TransSelectedInfoType = {
   brandName: String;
   aid: String;
@@ -29,12 +42,18 @@ export type TransSelectedInfoType = {
   brandId: Number;
 };
 
+/**
+ * @since 0.1.7
+ */
 export type InstalmentTransactionType = {
   count?: Number;
   interest?: Boolean;
   name?: String;
 };
 
+/**
+ * @since 0.1.7
+ */
 export type TransactionType = {
   amount: String;
   emailSent?: String;
@@ -95,6 +114,9 @@ export type TransactionType = {
   messageFromAuthorizer?: String;
 };
 
+/**
+ * @since 0.1.7
+ */
 export type TransactionSetupType = {
   stoneCode?: String;
   pinpadMacAddress?: String;
@@ -114,13 +136,22 @@ export type TransactionSetupType = {
   subMerchantTaxIdentificationNumber?: String;
 };
 
+/**
+ * @since 0.1.7
+ */
 export type MailContact = {
   email: String;
   name?: String;
 };
 
+/**
+ * @since 0.1.7
+ */
 export type ReceiptType = 'CLIENT' | 'MERCHANT';
 
+/**
+ * @since 0.1.7
+ */
 export type ProgressEventName =
   | 'REVERSE_PENDING_TRANSACTIONS_PROGRESS'
   | 'VOID_TRANSACTION_PROGRESS'

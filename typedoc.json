@@ -1,0 +1,10 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "entryPoints": ["src/index.tsx"],
+  "out": "docs",
+  "customCss": "./typedoc.css",
+  "name": "React Native Stone POS",
+  "includeVersion": true,
+  "githubPages": true,
+  "hideGenerator": true
+}
