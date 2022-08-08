@@ -39,6 +39,14 @@ Edit `android/app/build.gradle` ( NOT `android/build.gradle` ) and add the follo
 apply from: "../../node_modules/react-native-stone-pos/android/stone-repo.gradle"
 ```
 
+If you are building with the POS in mind, you will also need to apply this here:
+
+```gradle
+apply from: "../../node_modules/react-native-stone-pos/android/dynamic-hal.gradle"
+```
+
+This will enable the HAL modules of your choosing, or all of them as long as you are in POS mode, or the `StonePos_include*` variables are `true`
+
 #### Troubleshooting
 
 ##### Manifest merger failed : Attribute application@allowBackup value=(false)
@@ -118,6 +126,10 @@ if (!isRunningInPos) {
   );
 }
 ```
+
+## Example
+
+Checkout the [example project](https://github.com/EightSystems/react-native-stone-pos/tree/main/example), which was made with the intention of running all the required homologation tests. There you will see how to void, execute a charge, print, and so on.
 
 ## Contributing
 
