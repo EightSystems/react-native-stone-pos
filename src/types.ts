@@ -59,7 +59,12 @@ export type TransactionType = {
   emailSent?: String;
   timeToPassTransaction?: String;
   initiatorTransactionKey?: String;
+
+  /**
+   * Also know as ATK
+   */
   acquirerTransactionKey?: String;
+
   cardHolderNumber?: String;
   cardHolderName?: String;
   date?: String;
@@ -118,22 +123,95 @@ export type TransactionType = {
  * @since 0.1.7
  */
 export type TransactionSetupType = {
-  stoneCode?: String;
-  pinpadMacAddress?: String;
-  capture: Boolean;
-  useDefaultUI?: Boolean;
+  /**
+   * Stone requests the amount to be in cents, so, `R$ 1,00` will be `100` here.
+   */
   amountInCents: String;
+
+  /**
+   * When you have more than one stoneCode activated use this to select which one to use.
+   */
+  stoneCode?: String;
+
+  /**
+   * Bluetooth PinPad Mac Address when you not running in POS mode. Leave this empty to use the first pinpad in the list.
+   */
+  pinpadMacAddress?: String;
+
+  /**
+   * If you set this to `false` you need to call `captureTransaction` later.
+   */
+  capture: Boolean;
+
+  /**
+   * `INSTANT_PAYMENT` is here, but at least as of version `4.1.1` it is not yet implemented in StoneSDK, they ask you to use the `Intents Integration` if you want to use Instant Payments.
+   */
   typeOfTransaction: 'DEBIT' | 'CREDIT' | 'VOUCHER' | 'INSTANT_PAYMENT';
+
+  /**
+   * Send anything greater than 1 here to make an installment transaction.
+   */
   installmentCount?: Number;
+
+  /**
+   * If this is a `Parcelado pelo comprador`, or `Parcelado pelo comerciante`. (Default to false, which means `Parcelado pelo comerciante`)
+   */
   installmentHasInterest?: Boolean;
+
+  /**
+   * Use this if you are running multiple transactions.
+   */
   initiatorTransactionKey?: String;
+
+  /**
+   * Usually used by Sub-Acquirer Apps. (This will appear in the statement descriptor)
+   */
   shortName?: String;
+
+  /**
+   * Used by Sub-Acquirer Apps. (Also know as MCC)
+   */
   subMerchantCategoryCode?: String;
+
+  /**
+   * Used by Sub-Acquirer Apps.
+   */
   subMerchantAddress?: String;
+
+  /**
+   * Used by Sub-Acquirer Apps.
+   */
   subMerchantCity?: String;
+
+  /**
+   * Used by Sub-Acquirer Apps.
+   */
   subMerchantPostalAddress?: String;
+
+  /**
+   * Used by Sub-Acquirer Apps. (Also know as your internal Merchant ID)
+   */
   subMerchantRegisteredIdentifier?: String;
+
+  /**
+   * Used by Sub-Acquirer Apps. (Also know as CPF/CNPJ)
+   */
   subMerchantTaxIdentificationNumber?: String;
+
+  /**
+   * Wheter to use Stone's default progress dialog or not.
+   */
+  useDefaultUI?: Boolean;
+
+  /**
+   * Default UI dialog title.
+   */
+  dialogTitle?: String;
+
+  /**
+   * Default UI dialog main message.
+   */
+  dialogMessage?: String;
 };
 
 /**
@@ -145,11 +223,15 @@ export type MailContact = {
 };
 
 /**
+ * CLIENT means Customer. MERCHANT of course means Merchant.
+ *
  * @since 0.1.7
  */
 export type ReceiptType = 'CLIENT' | 'MERCHANT';
 
 /**
+ * This is used in the `useNativeEventListener` hook.
+ *
  * @since 0.1.7
  */
 export type ProgressEventName =

@@ -59,7 +59,7 @@ export const IS_RUNNING_IN_POS = new Proxy(
 const eventEmitter = new NativeEventEmitter(NativeModules.StonePos);
 
 /**
- * React hook so you can list to the native events.
+ * React hook so you can listen to the native events.
  * This hook updates the callback even when your state changes.
  *
  * @category Hooks
