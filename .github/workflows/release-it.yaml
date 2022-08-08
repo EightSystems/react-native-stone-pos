@@ -16,7 +16,9 @@ jobs:
         run: |
           git config user.name "${GITHUB_ACTOR}"
           git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
-      - run: yarn install
+      - run: |
+          yarn install
+          yarn docs
       - run: |
           npm config set //registry.npmjs.org/:_authToken $NPM_TOKEN
           yarn release
