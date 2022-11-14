@@ -1,6 +1,6 @@
 {
   "name": "react-native-stone-pos",
-  "version": "0.1.11",
+  "version": "0.1.12",
   "description": "test",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
