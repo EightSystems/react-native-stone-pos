@@ -12,6 +12,10 @@ import type {
   ProgressEventName,
 } from './types';
 
+import { MifareKeyType } from './types';
+
+export { MifareKeyType };
+
 export type {
   MailContact,
   ReceiptType,
@@ -47,14 +51,18 @@ const StonePos = NativeModules.StonePos
  * @since 0.1.7
  * @category Constants
  */
-export const IS_RUNNING_IN_POS = new Proxy(
-  {},
-  {
-    get() {
-      return StonePos.getConstants().IS_RUNNING_IN_POS;
-    },
-  }
-);
+export const IS_RUNNING_IN_POS: boolean = NativeModules.StonePos
+  ? NativeModules.StonePos.getConstants().IS_RUNNING_IN_POS
+  : false;
+
+/**
+ * If true we are running in a POS, like Sunmi, Ingenico, or PAX
+ * @since 0.1.11
+ * @category Constants
+ */
+export const STONE_SDK_VERSION: string = NativeModules.StonePos
+  ? NativeModules.StonePos.getConstants().STONE_SDK_VERSION
+  : '0.0.0';
 
 const eventEmitter = new NativeEventEmitter(NativeModules.StonePos);
 
@@ -507,6 +515,140 @@ export function printHTMLInPOSPrinter(
 ): Promise<boolean> {
   return StonePos.printHTMLInPOSPrinter(
     htmlContent,
+    dialogMessage,
+    dialogTitle,
+    useDefaultUI,
+    progressCallbackEventName
+  );
+}
+
+/**
+ * Detects a Mifare Card.
+ * @category Mifare Methods
+ * @since 0.1.11
+ * @return cardUuid - Card UUID as String array
+ */
+export function mifareDetectCard(
+  dialogMessage: String | null = null,
+  dialogTitle: String | null = null,
+  useDefaultUI: Boolean = false,
+  progressCallbackEventName: ProgressEventName = 'MIFARE_PROGRESS'
+): Promise<String[]> {
+  return StonePos.mifareDetectCard(
+    dialogMessage,
+    dialogTitle,
+    useDefaultUI,
+    progressCallbackEventName
+  );
+}
+
+/**
+ * Authenticates a Mifare Sector.
+ * @category Mifare Methods
+ * @since 0.1.11
+ * @param keyType - Either TypeA or TypeB
+ * @param sector - The sector byte as integer
+ * @param key - Hex String, like FFFFFFFFFFFF
+ * @param dialogMessage - Default UI dialog main message.
+ * @param dialogTitle - Default UI dialog title.
+ * @param useDefaultUI - Wheter to use Stone's default progress dialog or not.
+ * @param progressCallbackEventName - The native event name to map with the `useNativeEventListener` hook.
+ *
+ */
+export function mifareAuthenticateSector(
+  keyType: MifareKeyType,
+  sector: number,
+  key: String = 'FFFFFFFFFFFF',
+  dialogMessage: String | null = null,
+  dialogTitle: String | null = null,
+  useDefaultUI: Boolean = false,
+  progressCallbackEventName: ProgressEventName = 'MIFARE_PROGRESS'
+): Promise<boolean> {
+  return StonePos.mifareAuthenticateSector(
+    keyType,
+    sector,
+    key,
+    dialogMessage,
+    dialogTitle,
+    useDefaultUI,
+    progressCallbackEventName
+  );
+}
+
+/**
+ * Authenticates and Reads a Mifare Sector Block.
+ * @category Mifare Methods
+ * @since 0.1.11
+ * @param keyType - Either TypeA or TypeB
+ * @param sector - The sector byte as integer
+ * @param key - Hex String, like FFFFFFFFFFFF
+ * @param dialogMessage - Default UI dialog main message.
+ * @param dialogTitle - Default UI dialog title.
+ * @param useDefaultUI - Wheter to use Stone's default progress dialog or not.
+ * @param progressCallbackEventName - The native event name to map with the `useNativeEventListener` hook.
+ *
+ */
+export function mifareReadBlock(
+  keyType: MifareKeyType,
+  sector: number,
+  block: number,
+  key: String = 'FFFFFFFFFFFF',
+  dialogMessage: String | null = null,
+  dialogTitle: String | null = null,
+  useDefaultUI: Boolean = false,
+  progressCallbackEventName: ProgressEventName = 'MIFARE_PROGRESS'
+): Promise<String[]> {
+  if (block < 0 || block > 3) {
+    throw Error('Your block must be between 0-3 inclusive');
+  }
+
+  return StonePos.mifareReadBlock(
+    keyType,
+    sector,
+    block,
+    key,
+    dialogMessage,
+    dialogTitle,
+    useDefaultUI,
+    progressCallbackEventName
+  );
+}
+
+/**
+ * Authenticates and Writes a Mifare Sector Block.
+ * @category Mifare Methods
+ * @since 0.1.11
+ * @param keyType - Either TypeA or TypeB
+ * @param sector - The sector byte as integer
+ * @param data - Data to write as a String with 16 bytes
+ * @param key - Hex String, like FFFFFFFFFFFF
+ * @param dialogMessage - Default UI dialog main message.
+ * @param dialogTitle - Default UI dialog title.
+ * @param useDefaultUI - Wheter to use Stone's default progress dialog or not.
+ * @param progressCallbackEventName - The native event name to map with the `useNativeEventListener` hook.
+ *
+ */
+export function mifareWriteBlock(
+  keyType: MifareKeyType,
+  sector: number,
+  block: number,
+  data: String,
+  key: String = 'FFFFFFFFFFFF',
+  dialogMessage: String | null = null,
+  dialogTitle: String | null = null,
+  useDefaultUI: Boolean = false,
+  progressCallbackEventName: ProgressEventName = 'MIFARE_PROGRESS'
+): Promise<String[]> {
+  if (block < 0 || block > 3) {
+    throw Error('Your block must be between 0-3 inclusive');
+  }
+
+  return StonePos.mifareWriteBlock(
+    keyType,
+    sector,
+    block,
+    data,
+    key,
     dialogMessage,
     dialogTitle,
     useDefaultUI,

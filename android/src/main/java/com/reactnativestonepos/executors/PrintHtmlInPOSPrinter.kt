@@ -94,7 +94,7 @@ class PrintHtmlInPOSPrinter(
             }
 
             override fun onError() {
-              promise.reject("405", "Transaction Failed")
+              promise.reject("405", "Generic Error - Transaction Failed [onError from Provider] - Check adb log output")
             }
 
             override fun onStatusChanged(action: Action?) {

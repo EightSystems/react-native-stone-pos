@@ -245,4 +245,15 @@ export type ProgressEventName =
   | 'CONNECT_TO_PINPAD_PROGRESS'
   | 'PRINT_RECEIPT_IN_POS_PRINTER_PROGRESS'
   | 'PRINT_HTML_IN_POS_PRINTER_PROGRESS'
+  | 'MIFARE_PROGRESS'
   | String;
+
+/**
+ * Mifare Key Type
+ *
+ * @since 0.1.11
+ */
+export enum MifareKeyType {
+  TypeA = 0,
+  TypeB = 1,
+}

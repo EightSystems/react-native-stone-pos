@@ -1,18 +1,35 @@
 package com.reactnativestonepos.helpers
 
 import br.com.stone.payment.domain.datamodel.TransAppSelectedInfo
-import br.com.stone.posandroid.datacontainer.api.resolver.format
-import com.facebook.react.bridge.ReadableMap
-import com.facebook.react.bridge.WritableMap
+import com.facebook.react.bridge.*
 import stone.application.enums.InstalmentTransactionEnum
 import stone.application.enums.TypeOfTransactionEnum
 import stone.database.transaction.TransactionObject
 import stone.user.Address
 import stone.user.UserModel
-import java.lang.Exception
+
 
 class ConversionHelpers {
   companion object {
+    fun convertByteArrayToWritableArray(byteArray: ByteArray): WritableArray {
+      val value = Arguments.createArray()
+      for (i in 0..byteArray.size) {
+        value.pushInt(byteArray[i].toInt())
+      }
+
+      return value
+    }
+
+    fun convertReadableArrayToByteArray(readableArray: ReadableArray): ByteArray {
+      var byteArray = ByteArray(readableArray.size())
+
+      for (i in 0..readableArray.size()) {
+        byteArray[i] = readableArray.getInt(i).toByte()
+      }
+
+      return byteArray
+    }
+
     fun convertTransSelectedInfoToWritableMap(transAppSelectedInfo: TransAppSelectedInfo): WritableMap {
       return writableMapOf(
         "brandName" to transAppSelectedInfo.brandName,
@@ -48,7 +65,10 @@ class ConversionHelpers {
       )
     }
 
-    fun convertTransactionToWritableMap(transactionObject: TransactionObject, messageFromAuthorizer: String? = null): WritableMap {
+    fun convertTransactionToWritableMap(
+      transactionObject: TransactionObject,
+      messageFromAuthorizer: String? = null
+    ): WritableMap {
       return writableMapOf(
         "amount" to transactionObject.amount,
         "emailSent" to transactionObject.emailSent,
@@ -156,7 +176,7 @@ class ConversionHelpers {
 
       if (transactionSetup.getString("shortName")?.isNotEmpty() == true) {
         stoneTransaction.shortName =
-          if ( transactionSetup.getString("shortName")!!.length > 14 ) {
+          if (transactionSetup.getString("shortName")!!.length > 14) {
             transactionSetup.getString("shortName")!!.substring(0, 14)
           } else {
             transactionSetup.getString("shortName")!!

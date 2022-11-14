@@ -12,8 +12,8 @@ class StonePosModule(reactContext: ReactApplicationContext) :
   ReactContextBaseJavaModule(reactContext) {
 
   companion object {
-    private const val TAG = "RNStonePos"
     private const val IS_RUNNING_IN_POS = "IS_RUNNING_IN_POS"
+    private const val STONE_SDK_VERSION = "STONE_SDK_VERSION"
 
     var currentUserList: List<UserModel>? = null
     fun hasStoneCodeInList(stoneCode: String): Boolean {
@@ -47,10 +47,11 @@ class StonePosModule(reactContext: ReactApplicationContext) :
     // Keep: Required for RN built in Event Emitter Calls.
   }
 
-  override fun getConstants(): Map<String, Any>? {
+  override fun getConstants(): Map<String, Any> {
     val constants: MutableMap<String, Any> = HashMap()
 
     constants[IS_RUNNING_IN_POS] = StoneTransactionHelpers.isRunningInPOS(reactApplicationContext)
+    constants[STONE_SDK_VERSION] = Stone.getSdkVersion()
 
     return constants
   }
@@ -427,6 +428,101 @@ class StonePosModule(reactContext: ReactApplicationContext) :
     try {
       PrintHtmlInPOSPrinter(reactApplicationContext, currentActivity).executeAction(
         htmlContent,
+        dialogMessage,
+        dialogTitle,
+        useDefaultUI,
+        progressCallbackEventName,
+        promise
+      )
+    } catch (e: Exception) {
+      promise.reject(e)
+    }
+  }
+
+  @ReactMethod
+  fun mifareDetectCard(
+    dialogMessage: String?,
+    dialogTitle: String?,
+    useDefaultUI: Boolean,
+    progressCallbackEventName: String,
+    promise: Promise
+  ) {
+    try {
+      MifarePOSExecutor(reactApplicationContext, currentActivity).executeDetectCard(
+        dialogMessage, dialogTitle, useDefaultUI, progressCallbackEventName, promise
+      )
+    } catch (e: Exception) {
+      promise.reject(e)
+    }
+  }
+
+  @ReactMethod
+  fun mifareAuthenticateSector(
+    keyType: Int, sector: Int, key: String, dialogMessage: String?,
+    dialogTitle: String?,
+    useDefaultUI: Boolean,
+    progressCallbackEventName: String,
+    promise: Promise
+  ) {
+    try {
+      MifarePOSExecutor(reactApplicationContext, currentActivity).executeAuthenticateSector(
+        keyType,
+        key,
+        sector,
+        dialogMessage,
+        dialogTitle,
+        useDefaultUI,
+        progressCallbackEventName,
+        promise
+      )
+    } catch (e: Exception) {
+      promise.reject(e)
+    }
+  }
+
+  @ReactMethod
+  fun mifareReadBlock(
+    keyType: Int, sector: Int, block: Int,
+    key: String, dialogMessage: String?,
+    dialogTitle: String?,
+    useDefaultUI: Boolean,
+    progressCallbackEventName: String,
+    promise: Promise
+  ) {
+    try {
+      MifarePOSExecutor(reactApplicationContext, currentActivity).executeReadBlock(
+        keyType,
+        key,
+        sector,
+        block,
+        dialogMessage,
+        dialogTitle,
+        useDefaultUI,
+        progressCallbackEventName,
+        promise
+      )
+    } catch (e: Exception) {
+      promise.reject(e)
+    }
+  }
+
+  @ReactMethod
+  fun mifareWriteBlock(
+    keyType: Int, sector: Int, block: Int,
+    data: String,
+    key: String, dialogMessage: String?,
+    dialogTitle: String?,
+    useDefaultUI: Boolean,
+    progressCallbackEventName: String,
+    promise: Promise
+  ) {
+    try {
+      MifarePOSExecutor(reactApplicationContext, currentActivity).executeWriteBlock(
+        keyType,
+        key,
+        sector,
+        block,
+        data,
         dialogMessage,
         dialogTitle,
         useDefaultUI,
