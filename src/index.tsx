@@ -106,11 +106,21 @@ export function useNativeEventListener(
 /**
  * Initialize Stone SDK.
  * @category SDK
- * @since 0.1.7
+ * @since 0.1.14
  * @param appName - Your application name
+ * @param qrCodeProviderKey - The PIX Provider ID (Talk with your BizDev to grab one)
+ * @param qrCodeProviderAuthorization - The PIX Provider Access Key (Talk with your BizDev to grab one)
  */
-export function initSDK(appName: String): Promise<boolean> {
-  return StonePos.initSDK(appName);
+export function initSDK(
+  appName: String,
+  qrCodeProviderKey: String = '',
+  qrCodeProviderAuthorization: String = ''
+): Promise<boolean> {
+  return StonePos.initSDK(
+    appName,
+    qrCodeProviderKey,
+    qrCodeProviderAuthorization
+  );
 }
 
 /**
@@ -139,23 +149,26 @@ export function activateCode(
 /**
  * Deactivate StoneCodes from the device. If the Stone Code is not found in the device, it will throw an exception.
  * @category Activation
- * @since 0.1.7
+ * @since 0.1.14
  * @param stoneCode - Merchant's Stone Code.
  * @param dialogMessage - Default UI dialog main message.
  * @param dialogTitle - Default UI dialog title.
  * @param useDefaultUI - Wheter to use Stone's default progress dialog or not.
+ * @param ignoreLastStoneCodeCheck - If there's only a single Stone Code activated in this POS we prevent you from deactivating it unless you set it to true
  */
 export function deactivateCode(
   stoneCode: String,
   dialogMessage: String | null = null,
   dialogTitle: String | null = null,
-  useDefaultUI: Boolean = true
+  useDefaultUI: Boolean = true,
+  ignoreLastStoneCodeCheck: Boolean = false
 ): Promise<boolean> {
   return StonePos.deactivateCode(
     stoneCode,
     dialogMessage,
     dialogTitle,
-    useDefaultUI
+    useDefaultUI,
+    ignoreLastStoneCodeCheck
   );
 }
 
@@ -327,6 +340,18 @@ export function makeTransaction(
     },
     progressCallbackEventName
   );
+}
+
+/**
+ * Cancels a make transaction operation in progress.
+ * After you call this method, it will trigger an exception at the makeTransaction method, which is expected, it's just letting you know that it's cancelled.
+ * If no current transaction is running, it will trigger an exception too.
+ *
+ * @category Transaction Executor
+ * @since 0.1.14
+ */
+export function cancelRunningTaskMakeTransaction(): Promise<Boolean> {
+  return StonePos.cancelRunningTaskMakeTransaction();
 }
 
 /**

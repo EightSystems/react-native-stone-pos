@@ -52,7 +52,7 @@ export type InstalmentTransactionType = {
 };
 
 /**
- * @since 0.1.7
+ * @since 0.1.14
  */
 export type TransactionType = {
   amount: String;
@@ -146,7 +146,15 @@ export type TransactionSetupType = {
   /**
    * `INSTANT_PAYMENT` is here, but at least as of version `4.1.1` it is not yet implemented in StoneSDK, they ask you to use the `Intents Integration` if you want to use Instant Payments.
    */
-  typeOfTransaction: 'DEBIT' | 'CREDIT' | 'VOUCHER' | 'INSTANT_PAYMENT';
+  typeOfTransaction: 'DEBIT' | 'CREDIT' | 'VOUCHER' | 'INSTANT_PAYMENT' | 'PIX';
+
+  entryMode?:
+    | 'MAGNETIC_STRIPE'
+    | 'CHIP_N_PIN'
+    | 'CONTACTLESS'
+    | 'CONTACTLESS_MAG'
+    | 'QRCODE'
+    | 'UNKNOWN';
 
   /**
    * Send anything greater than 1 here to make an installment transaction.

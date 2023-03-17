@@ -3535,6 +3535,11 @@ react-native-codegen@^0.0.17:
     jscodeshift "^0.13.1"
     nullthrows "^1.1.1"
 
+react-native-config@^1.5.0:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/react-native-config/-/react-native-config-1.5.0.tgz#ff5a78fbbc2c2a0525788e5f3c86101110651ba4"
+  integrity sha512-slecooA/0tCwhb+RuWEbwLqtKirGh9vWPRpgDfH7uPAraCciqHNH2XjS9ylW+Spn4FUrHg5KWTqUGs9BdBADHg==
+
 react-native-device-info@^9.0.2:
   version "9.0.2"
   resolved "https://registry.yarnpkg.com/react-native-device-info/-/react-native-device-info-9.0.2.tgz#00c7ab139a620ac9650852cd0ef0fb69d9a4418d"

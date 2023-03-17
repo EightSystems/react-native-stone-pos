@@ -1,6 +1,7 @@
 package com.reactnativestonepos.executors
 
 import android.app.Activity
+import br.com.stone.posandroid.datacontainer.api.util.toEncodedString
 import br.com.stone.posandroid.providers.PosTransactionProvider
 import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.ReactApplicationContext
@@ -14,6 +15,7 @@ import com.reactnativestonepos.helpers.writableMapOf
 import stone.application.enums.Action
 import stone.application.interfaces.StoneActionCallback
 import stone.database.transaction.TransactionDAO
+import stone.providers.BaseTransactionProvider
 import stone.providers.TransactionProvider
 import stone.utils.PinpadObject
 import stone.utils.Stone
@@ -136,14 +138,25 @@ class MakeTransaction(
             .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
             .emit(
               progressCallbackEventName, writableMapOf(
-                "initiatorTransactionKey" to transactionObject.initiatorTransactionKey,
-                "status" to action?.name
+                "initiatorTransactionKey" to transactionObject?.initiatorTransactionKey,
+                "status" to action?.name,
+                "qrCode" to if (action == Action.TRANSACTION_WAITING_QRCODE_SCAN) transactionObject?.qrCode?.toEncodedString() else null
               )
             )
         }
       }
 
-      transactionProvider.execute()
+      executeTaskWithReference("makeTransaction", transactionProvider)
+    }
+  }
+
+  fun cancelAction(promise: Promise) {
+    checkSDKInitializedAndHandleExceptions(promise) {
+      cancelTaskWithReference("makeTransaction") {
+        (it as BaseTransactionProvider).abortPayment()
+      }
+
+      promise.resolve(true)
     }
   }
 }

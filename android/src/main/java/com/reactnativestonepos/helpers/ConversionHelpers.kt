@@ -2,6 +2,7 @@ package com.reactnativestonepos.helpers
 
 import br.com.stone.payment.domain.datamodel.TransAppSelectedInfo
 import com.facebook.react.bridge.*
+import stone.application.enums.EntryMode
 import stone.application.enums.InstalmentTransactionEnum
 import stone.application.enums.TypeOfTransactionEnum
 import stone.database.transaction.TransactionObject
@@ -155,6 +156,12 @@ class ConversionHelpers {
             it.toString() == transactionSetup.getString("typeOfTransaction")!!
           } ?: throw Exception("typeOfTransaction not valid")
         }
+
+      if (transactionSetup.getString("entryMode")?.isNotEmpty() == true) {
+        stoneTransaction.entryMode = EntryMode.values().findLast {
+          it.toString() == transactionSetup.getString("entryMode")!!
+        } ?: throw Exception("entryMode not valid")
+      }
 
       /**
        * We iterate through the enum and find the perfect match between count and has Interest

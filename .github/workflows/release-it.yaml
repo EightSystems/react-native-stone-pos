@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - main
+      - beta
 concurrency: deploy-${{ github.ref }}
 
 jobs:
@@ -20,7 +21,12 @@ jobs:
       - run: yarn install
       - run: |
           npm config set //registry.npmjs.org/:_authToken $NPM_TOKEN
-          yarn release
+
+          if [ "$GITHUB_REF_NAME" = "main" ]; then
+            yarn release
+          else
+            yarn release -- --preRelease=$GITHUB_REF_NAME
+          fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}

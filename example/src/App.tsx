@@ -1,17 +1,20 @@
 import * as React from 'react';
 import {
+  ActivityIndicator,
   Alert,
+  Image,
+  Modal,
+  Pressable,
   ScrollView,
   StyleSheet,
-  Pressable,
-  View,
   Text,
-  ActivityIndicator,
+  View,
 } from 'react-native';
+import Config from 'react-native-config';
 import DeviceInfo from 'react-native-device-info';
 import AlertPrompt from 'react-native-prompt-android';
-import * as StonePOS from 'react-native-stone-pos';
 import type { TransactionType } from 'react-native-stone-pos';
+import * as StonePOS from 'react-native-stone-pos';
 import packageJson from '../package.json';
 import { Spacer } from './Spacer';
 
@@ -27,6 +30,7 @@ type ButtonProps = {
   title: string;
   onPress: () => void;
   isLoading: boolean;
+  isRed?: boolean;
 };
 
 const Button = (props: ButtonProps) => {
@@ -35,7 +39,7 @@ const Button = (props: ButtonProps) => {
       onPress={props.onPress}
       disabled={props.isLoading}
       style={{
-        backgroundColor: 'blue',
+        backgroundColor: props.isRed ? 'red' : 'blue',
         opacity: props.isLoading ? 0.75 : 1,
         minHeight: 50,
         width: '90%',
@@ -67,13 +71,38 @@ export default function App() {
   const [testLoadingStatus, setTestLoadingStatus] =
     React.useState<TestLoadingStatus>({});
 
+  const [showQrCodeModal, setShowQrCodeModal] = React.useState<boolean>(false);
+  const [qrCodeBase64, setQrCodeBase64] = React.useState<string | null>(null);
+
   StonePOS.useNativeEventListener('MAKE_TRANSACTION_PROGRESS', (data: any) => {
     console.log('Payment', data);
+
+    if (data.status === 'TRANSACTION_WAITING_QRCODE_SCAN') {
+      setQrCodeBase64(data.qrCode);
+      setShowQrCodeModal(true);
+    } else {
+      setShowQrCodeModal(false);
+    }
   });
 
   StonePOS.useNativeEventListener('VOID_TRANSACTION_PROGRESS', (data: any) => {
     console.log('Void', data);
   });
+
+  const executeCancelMakeTransactionInProgress = async () => {
+    Alert.alert('Success', 'Sending cancel request', [
+      {
+        text: 'Ok',
+        onPress: async () => {
+          try {
+            await StonePOS.cancelRunningTaskMakeTransaction();
+          } catch (e) {
+            Alert.alert('Error', `${JSON.stringify(e)}`);
+          }
+        },
+      },
+    ]);
+  };
 
   const executeTestWithLoadingStatuses = async (
     testId: string,
@@ -295,6 +324,8 @@ export default function App() {
     } catch (e) {
       Alert.alert('Error', `Your test failed: ${JSON.stringify(e)}`);
     }
+
+    setShowQrCodeModal(false);
   };
 
   const voidTransactionFromTest = async (testId: string) => {
@@ -526,7 +557,11 @@ export default function App() {
 
   const sdkInitialize = async () => {
     try {
-      const sdkInitializeResult = await StonePOS.initSDK(packageJson.name);
+      const sdkInitializeResult = await StonePOS.initSDK(
+        packageJson.name,
+        Config.StonePos_qrCodeProviderKey,
+        Config.StonePos_qrCodeProviderAuthorization
+      );
 
       if (sdkInitializeResult) {
         setSDKInitialized(true);
@@ -541,265 +576,323 @@ export default function App() {
   return (
     <View style={styles.container}>
       {isSDKInitialized ? (
-        <ScrollView
-          style={styles.scroll}
-          contentContainerStyle={styles.scrollContent}
-        >
-          <Button
-            title="Test 001 - Application Info"
-            onPress={() =>
-              executeTestWithLoadingStatuses(
-                'TST_001',
-                async () => await deviceInfoTest()
-              )
-            }
-            isLoading={testLoadingStatus['TST_001'] ? true : false}
-          />
-          <Spacer />
-          <Button
-            title="Test 002 - Denied Activation"
-            onPress={() =>
-              executeTestWithLoadingStatuses(
-                'TST_002',
-                async () => await wrongCodeActivationTest()
-              )
-            }
-            isLoading={testLoadingStatus['TST_002'] ? true : false}
-          />
-          <Spacer />
-          <Button
-            title="Test 003 - Approved Activation"
-            onPress={() =>
-              executeTestWithLoadingStatuses(
-                'TST_003',
-                async () => await approvedCodeActivationTest()
-              )
-            }
-            isLoading={testLoadingStatus['TST_003'] ? true : false}
-          />
-          <Spacer />
-          <Button
-            title="Test 003/1 - Get Activated Codes"
-            onPress={() =>
-              executeTestWithLoadingStatuses(
-                'TST_0031',
-                async () => await getActivatedCodesTest()
-              )
-            }
-            isLoading={testLoadingStatus['TST_0031'] ? true : false}
-          />
-          <Spacer />
-          <Button
-            title="Test 004 - 1X Credit Denied"
-            onPress={() =>
-              executeTestWithLoadingStatuses(
-                'TST_004',
-                async () => await oneInstallmentCreditDeniedTest()
-              )
-            }
-            isLoading={testLoadingStatus['TST_004'] ? true : false}
-          />
-          <Spacer />
-          <Button
-            title="Test 005 - Transaction Data"
-            onPress={() =>
-              executeTestWithLoadingStatuses(
-                'TST_005',
-                async () => await lastTransactionDataTest()
-              )
-            }
-            isLoading={testLoadingStatus['TST_005'] ? true : false}
-          />
-          <Spacer />
-          <Button
-            title="Test 006 - 1x Credit Denied (Wrong Password)"
-            onPress={() =>
-              executeTestWithLoadingStatuses(
-                'TST_006',
-                async () => await wrongPasswordCreditTest()
-              )
-            }
-            isLoading={testLoadingStatus['TST_006'] ? true : false}
-          />
-          <Spacer />
-          <Button
-            title="Test 007 - 1x Credit Approved"
-            onPress={() =>
-              executeTestWithLoadingStatuses(
-                'TST_007',
-                async () => await approvedCreditTest()
-              )
-            }
-            isLoading={testLoadingStatus['TST_007'] ? true : false}
-          />
-          <Spacer />
-          <Button
-            title="Test 008 - Transaction Data"
-            onPress={() =>
-              executeTestWithLoadingStatuses(
-                'TST_008',
-                async () => await lastTransactionDataTest()
-              )
-            }
-            isLoading={testLoadingStatus['TST_008'] ? true : false}
-          />
-          <Spacer />
-          <Button
-            title="Test 009 - Void Approved"
-            onPress={() =>
-              executeTestWithLoadingStatuses(
-                'TST_009',
-                async () => await voidTransactionFromTest('TST_007')
-              )
-            }
-            isLoading={testLoadingStatus['TST_009'] ? true : false}
-          />
-          <Spacer />
-          <Button
-            title="Test 010 - Transaction Data"
-            onPress={() =>
-              executeTestWithLoadingStatuses(
-                'TST_010',
-                async () => await lastTransactionDataTest()
-              )
-            }
-            isLoading={testLoadingStatus['TST_010'] ? true : false}
-          />
-          <Spacer />
-          <Button
-            title="Test 011 - 2x Credit Approved"
-            onPress={() =>
-              executeTestWithLoadingStatuses(
-                'TST_011',
-                async () =>
-                  await approvedCreditTest(
-                    'CREDIT',
-                    '10000',
-                    'TST_011',
-                    2,
-                    false
-                  )
-              )
-            }
-            isLoading={testLoadingStatus['TST_011'] ? true : false}
-          />
-          <Spacer />
-          <Button
-            title="Test 012 - Void Approved"
-            onPress={() =>
-              executeTestWithLoadingStatuses(
-                'TST_012',
-                async () => await voidTransactionFromTest('TST_011')
-              )
-            }
-            isLoading={testLoadingStatus['TST_012'] ? true : false}
-          />
-          <Spacer />
-          <Button
-            title="Test 013 - Transaction Data"
-            onPress={() =>
-              executeTestWithLoadingStatuses(
-                'TST_013',
-                async () => await lastTransactionDataTest()
-              )
-            }
-            isLoading={testLoadingStatus['TST_013'] ? true : false}
-          />
-          <Spacer />
-          <Button
-            title="Test 014 - Debit Approved"
-            onPress={() =>
-              executeTestWithLoadingStatuses(
-                'TST_014',
-                async () =>
-                  await approvedCreditTest('DEBIT', '8000', 'TST_014', 1, false)
-              )
-            }
-            isLoading={testLoadingStatus['TST_014'] ? true : false}
-          />
-          <Spacer />
-          <Button
-            title="Test 015 - Void Approved"
-            onPress={() =>
-              executeTestWithLoadingStatuses(
-                'TST_015',
-                async () => await voidTransactionFromTest('TST_014')
-              )
-            }
-            isLoading={testLoadingStatus['TST_015'] ? true : false}
-          />
-          <Spacer />
-          <Button
-            title="Test 016 - Transaction Data"
-            onPress={() =>
-              executeTestWithLoadingStatuses(
-                'TST_016',
-                async () => await lastTransactionDataTest()
-              )
-            }
-            isLoading={testLoadingStatus['TST_016'] ? true : false}
-          />
+        <React.Fragment>
+          <Modal visible={showQrCodeModal}>
+            <View
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: '100%',
+                height: '100%',
+              }}
+            >
+              {qrCodeBase64 && (
+                <Image
+                  source={{
+                    uri: `data:image/png;base64,${qrCodeBase64}`,
+                  }}
+                  style={{ width: 200, height: 200 }}
+                />
+              )}
+
+              <Spacer />
+              <Button
+                title="Cancel Make Transaction in Progress"
+                isRed={true}
+                onPress={() => executeCancelMakeTransactionInProgress()}
+                isLoading={false}
+              />
+            </View>
+          </Modal>
 
           <Spacer />
           <Button
-            title="Test 017 - Print HTML"
-            onPress={() =>
-              executeTestWithLoadingStatuses(
-                'TST_017',
-                async () => await htmlPrintTest()
-              )
-            }
-            isLoading={testLoadingStatus['TST_017'] ? true : false}
+            title="Cancel Make Transaction in Progress"
+            isRed={true}
+            onPress={() => executeCancelMakeTransactionInProgress()}
+            isLoading={false}
           />
-
           <Spacer />
-          <Button
-            title="Test 018 - Detect Mifare Card"
-            onPress={() =>
-              executeTestWithLoadingStatuses(
-                'TST_018',
-                async () => await mifareDetectCardTest()
-              )
-            }
-            isLoading={testLoadingStatus['TST_018'] ? true : false}
-          />
+          <ScrollView
+            style={styles.scroll}
+            contentContainerStyle={styles.scrollContent}
+          >
+            <Button
+              title="Test 001 - Application Info"
+              onPress={() =>
+                executeTestWithLoadingStatuses(
+                  'TST_001',
+                  async () => await deviceInfoTest()
+                )
+              }
+              isLoading={testLoadingStatus['TST_001'] ? true : false}
+            />
+            <Spacer />
+            <Button
+              title="Test 002 - Denied Activation"
+              onPress={() =>
+                executeTestWithLoadingStatuses(
+                  'TST_002',
+                  async () => await wrongCodeActivationTest()
+                )
+              }
+              isLoading={testLoadingStatus['TST_002'] ? true : false}
+            />
+            <Spacer />
+            <Button
+              title="Test 003 - Approved Activation"
+              onPress={() =>
+                executeTestWithLoadingStatuses(
+                  'TST_003',
+                  async () => await approvedCodeActivationTest()
+                )
+              }
+              isLoading={testLoadingStatus['TST_003'] ? true : false}
+            />
+            <Spacer />
+            <Button
+              title="Test 003/1 - Get Activated Codes"
+              onPress={() =>
+                executeTestWithLoadingStatuses(
+                  'TST_0031',
+                  async () => await getActivatedCodesTest()
+                )
+              }
+              isLoading={testLoadingStatus['TST_0031'] ? true : false}
+            />
+            <Spacer />
+            <Button
+              title="Test 004 - 1X Credit Denied"
+              onPress={() =>
+                executeTestWithLoadingStatuses(
+                  'TST_004',
+                  async () => await oneInstallmentCreditDeniedTest()
+                )
+              }
+              isLoading={testLoadingStatus['TST_004'] ? true : false}
+            />
+            <Spacer />
+            <Button
+              title="Test 005 - Transaction Data"
+              onPress={() =>
+                executeTestWithLoadingStatuses(
+                  'TST_005',
+                  async () => await lastTransactionDataTest()
+                )
+              }
+              isLoading={testLoadingStatus['TST_005'] ? true : false}
+            />
+            <Spacer />
+            <Button
+              title="Test 006 - 1x Credit Denied (Wrong Password)"
+              onPress={() =>
+                executeTestWithLoadingStatuses(
+                  'TST_006',
+                  async () => await wrongPasswordCreditTest()
+                )
+              }
+              isLoading={testLoadingStatus['TST_006'] ? true : false}
+            />
+            <Spacer />
+            <Button
+              title="Test 007 - 1x Credit Approved"
+              onPress={() =>
+                executeTestWithLoadingStatuses(
+                  'TST_007',
+                  async () => await approvedCreditTest()
+                )
+              }
+              isLoading={testLoadingStatus['TST_007'] ? true : false}
+            />
+            <Spacer />
+            <Button
+              title="Test 008 - Transaction Data"
+              onPress={() =>
+                executeTestWithLoadingStatuses(
+                  'TST_008',
+                  async () => await lastTransactionDataTest()
+                )
+              }
+              isLoading={testLoadingStatus['TST_008'] ? true : false}
+            />
+            <Spacer />
+            <Button
+              title="Test 009 - Void Approved"
+              onPress={() =>
+                executeTestWithLoadingStatuses(
+                  'TST_009',
+                  async () => await voidTransactionFromTest('TST_007')
+                )
+              }
+              isLoading={testLoadingStatus['TST_009'] ? true : false}
+            />
+            <Spacer />
+            <Button
+              title="Test 010 - Transaction Data"
+              onPress={() =>
+                executeTestWithLoadingStatuses(
+                  'TST_010',
+                  async () => await lastTransactionDataTest()
+                )
+              }
+              isLoading={testLoadingStatus['TST_010'] ? true : false}
+            />
+            <Spacer />
+            <Button
+              title="Test 011 - 2x Credit Approved"
+              onPress={() =>
+                executeTestWithLoadingStatuses(
+                  'TST_011',
+                  async () =>
+                    await approvedCreditTest(
+                      'CREDIT',
+                      '10000',
+                      'TST_011',
+                      2,
+                      false
+                    )
+                )
+              }
+              isLoading={testLoadingStatus['TST_011'] ? true : false}
+            />
+            <Spacer />
+            <Button
+              title="Test 012 - Void Approved"
+              onPress={() =>
+                executeTestWithLoadingStatuses(
+                  'TST_012',
+                  async () => await voidTransactionFromTest('TST_011')
+                )
+              }
+              isLoading={testLoadingStatus['TST_012'] ? true : false}
+            />
+            <Spacer />
+            <Button
+              title="Test 013 - Transaction Data"
+              onPress={() =>
+                executeTestWithLoadingStatuses(
+                  'TST_013',
+                  async () => await lastTransactionDataTest()
+                )
+              }
+              isLoading={testLoadingStatus['TST_013'] ? true : false}
+            />
+            <Spacer />
+            <Button
+              title="Test 014 - Debit Approved"
+              onPress={() =>
+                executeTestWithLoadingStatuses(
+                  'TST_014',
+                  async () =>
+                    await approvedCreditTest(
+                      'DEBIT',
+                      '8000',
+                      'TST_014',
+                      1,
+                      false
+                    )
+                )
+              }
+              isLoading={testLoadingStatus['TST_014'] ? true : false}
+            />
+            <Spacer />
+            <Button
+              title="Test 015 - Void Approved"
+              onPress={() =>
+                executeTestWithLoadingStatuses(
+                  'TST_015',
+                  async () => await voidTransactionFromTest('TST_014')
+                )
+              }
+              isLoading={testLoadingStatus['TST_015'] ? true : false}
+            />
+            <Spacer />
+            <Button
+              title="Test 016 - Transaction Data"
+              onPress={() =>
+                executeTestWithLoadingStatuses(
+                  'TST_016',
+                  async () => await lastTransactionDataTest()
+                )
+              }
+              isLoading={testLoadingStatus['TST_016'] ? true : false}
+            />
 
-          <Spacer />
-          <Button
-            title="Test 019 - Authenticate Mifare Sector"
-            onPress={() =>
-              executeTestWithLoadingStatuses(
-                'TST_019',
-                async () => await mifareAuthenticateSectorTest()
-              )
-            }
-            isLoading={testLoadingStatus['TST_019'] ? true : false}
-          />
+            <Spacer />
+            <Button
+              title="Test 017 - Print HTML"
+              onPress={() =>
+                executeTestWithLoadingStatuses(
+                  'TST_017',
+                  async () => await htmlPrintTest()
+                )
+              }
+              isLoading={testLoadingStatus['TST_017'] ? true : false}
+            />
 
-          <Spacer />
-          <Button
-            title="Test 020 - Read Mifare Sector Block"
-            onPress={() =>
-              executeTestWithLoadingStatuses(
-                'TST_020',
-                async () => await mifareReadSectorBlockTest()
-              )
-            }
-            isLoading={testLoadingStatus['TST_020'] ? true : false}
-          />
+            <Spacer />
+            <Button
+              title="Test 018 - Detect Mifare Card"
+              onPress={() =>
+                executeTestWithLoadingStatuses(
+                  'TST_018',
+                  async () => await mifareDetectCardTest()
+                )
+              }
+              isLoading={testLoadingStatus['TST_018'] ? true : false}
+            />
 
-          <Spacer />
-          <Button
-            title="Test 021 - Write Mifare Sector Block"
-            onPress={() =>
-              executeTestWithLoadingStatuses(
-                'TST_021',
-                async () => await mifareWriteSectorBlockTest()
-              )
-            }
-            isLoading={testLoadingStatus['TST_021'] ? true : false}
-          />
-        </ScrollView>
+            <Spacer />
+            <Button
+              title="Test 019 - Authenticate Mifare Sector"
+              onPress={() =>
+                executeTestWithLoadingStatuses(
+                  'TST_019',
+                  async () => await mifareAuthenticateSectorTest()
+                )
+              }
+              isLoading={testLoadingStatus['TST_019'] ? true : false}
+            />
+
+            <Spacer />
+            <Button
+              title="Test 020 - Read Mifare Sector Block"
+              onPress={() =>
+                executeTestWithLoadingStatuses(
+                  'TST_020',
+                  async () => await mifareReadSectorBlockTest()
+                )
+              }
+              isLoading={testLoadingStatus['TST_020'] ? true : false}
+            />
+
+            <Spacer />
+            <Button
+              title="Test 021 - Write Mifare Sector Block"
+              onPress={() =>
+                executeTestWithLoadingStatuses(
+                  'TST_021',
+                  async () => await mifareWriteSectorBlockTest()
+                )
+              }
+              isLoading={testLoadingStatus['TST_021'] ? true : false}
+            />
+
+            <Spacer />
+            <Button
+              title="Test 022 - Pix"
+              onPress={() =>
+                executeTestWithLoadingStatuses(
+                  'TST_022',
+                  async () =>
+                    await approvedCreditTest('PIX', '8000', 'TST_022', 1, false)
+                )
+              }
+              isLoading={testLoadingStatus['TST_022'] ? true : false}
+            />
+          </ScrollView>
+        </React.Fragment>
       ) : (
         <Button
           title="Initialize SDK"

@@ -7,6 +7,7 @@ import com.reactnativestonepos.helpers.StoneTransactionHelpers
 import stone.application.StoneStart
 import stone.user.UserModel
 import stone.utils.Stone
+import stone.utils.keys.StoneKeyType
 
 class StonePosModule(reactContext: ReactApplicationContext) :
   ReactContextBaseJavaModule(reactContext) {
@@ -14,6 +15,8 @@ class StonePosModule(reactContext: ReactApplicationContext) :
   companion object {
     private const val IS_RUNNING_IN_POS = "IS_RUNNING_IN_POS"
     private const val STONE_SDK_VERSION = "STONE_SDK_VERSION"
+    private var STONE_QRCODE_PROVIDER_ID = ""
+    private var STONE_QRCODE_AUTHORIZATION = ""
 
     var currentUserList: List<UserModel>? = null
     fun hasStoneCodeInList(stoneCode: String): Boolean {
@@ -27,9 +30,18 @@ class StonePosModule(reactContext: ReactApplicationContext) :
     fun updateUserList(reactContext: Context) {
       synchronized(this) {
         if (Stone.isInitialized()) {
-          currentUserList = StoneStart.init(reactContext)
+          currentUserList = StoneStart.init(
+            reactContext, hashMapOf(
+              StoneKeyType.QRCODE_PROVIDERID to STONE_QRCODE_PROVIDER_ID,
+              StoneKeyType.QRCODE_AUTHORIZATION to STONE_QRCODE_AUTHORIZATION
+            )
+          )
         }
       }
+    }
+
+    fun userListCount(): Int {
+      return if (currentUserList != null) currentUserList!!.size else 0
     }
   }
 
@@ -57,10 +69,23 @@ class StonePosModule(reactContext: ReactApplicationContext) :
   }
 
   @ReactMethod
-  fun initSDK(appName: String, promise: Promise) {
+  fun initSDK(
+    appName: String,
+    qrCodeProviderKey: String,
+    qrCodeProviderAuthorization: String,
+    promise: Promise
+  ) {
     try {
       synchronized(this) {
-        currentUserList = StoneStart.init(reactApplicationContext)
+        STONE_QRCODE_PROVIDER_ID = qrCodeProviderKey
+        STONE_QRCODE_AUTHORIZATION = qrCodeProviderAuthorization
+
+        currentUserList = StoneStart.init(
+          reactApplicationContext, hashMapOf(
+            StoneKeyType.QRCODE_PROVIDERID to qrCodeProviderKey,
+            StoneKeyType.QRCODE_AUTHORIZATION to qrCodeProviderAuthorization
+          )
+        )
 
         Stone.setAppName(appName)
 
@@ -89,6 +114,7 @@ class StonePosModule(reactContext: ReactApplicationContext) :
         dialogMessage,
         dialogTitle,
         useDefaultUI,
+        ignoreLastStoneCodeCheck = false,
         promise
       )
     } catch (e: Exception) {
@@ -102,6 +128,7 @@ class StonePosModule(reactContext: ReactApplicationContext) :
     dialogMessage: String?,
     dialogTitle: String?,
     useDefaultUI: Boolean,
+    ignoreLastStoneCodeCheck: Boolean,
     promise: Promise
   ) {
     try {
@@ -111,6 +138,7 @@ class StonePosModule(reactContext: ReactApplicationContext) :
         dialogMessage,
         dialogTitle,
         useDefaultUI,
+        ignoreLastStoneCodeCheck,
         promise
       )
     } catch (e: Exception) {
@@ -273,6 +301,19 @@ class StonePosModule(reactContext: ReactApplicationContext) :
       MakeTransaction(reactApplicationContext, currentActivity).executeAction(
         transactionSetup,
         progressCallbackEventName,
+        promise
+      )
+    } catch (e: Exception) {
+      promise.reject(e)
+    }
+  }
+
+  @ReactMethod
+  fun cancelRunningTaskMakeTransaction(
+    promise: Promise
+  ) {
+    try {
+      MakeTransaction(reactApplicationContext, currentActivity).cancelAction(
         promise
       )
     } catch (e: Exception) {

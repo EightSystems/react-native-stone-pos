@@ -34,6 +34,7 @@ class ActivateDeactivateCode(
     dialogMessage: String?,
     dialogTitle: String?,
     useDefaultUI: Boolean,
+    ignoreLastStoneCodeCheck: Boolean,
     promise: Promise
   ) {
     checkSDKInitializedAndHandleExceptions(promise) {
@@ -80,7 +81,11 @@ class ActivateDeactivateCode(
         if (isActivationAction) {
           transactionProvider.activate(stoneCode)
         } else {
-          transactionProvider.deactivate(stoneCode)
+          if (StonePosModule.userListCount() > 1 || ignoreLastStoneCodeCheck) {
+            transactionProvider.deactivate(stoneCode)
+          } else {
+            throw CodedException("401", "You can't deactivate the only Stone Code in this POS")
+          }
         }
       }
     }
