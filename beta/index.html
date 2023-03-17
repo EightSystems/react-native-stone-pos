@@ -1,0 +1,191 @@
+<!DOCTYPE html><html class="default" lang="en"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>React Native Stone POS</title><meta name="description" content="Documentation for React Native Stone POS"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="assets/style.css"/><link rel="stylesheet" href="assets/highlight.css"/><link rel="stylesheet" href="assets/custom.css"/><script async src="assets/search.js" id="search-script"></script></head><body><script>document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os"</script><header class="tsd-page-toolbar">
+<div class="tsd-toolbar-contents container">
+<div class="table-cell" id="tsd-search" data-base=".">
+<div class="field"><label for="tsd-search-field" class="tsd-widget search no-caption"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M15.7824 13.833L12.6666 10.7177C12.5259 10.5771 12.3353 10.499 12.1353 10.499H11.6259C12.4884 9.39596 13.001 8.00859 13.001 6.49937C13.001 2.90909 10.0914 0 6.50048 0C2.90959 0 0 2.90909 0 6.49937C0 10.0896 2.90959 12.9987 6.50048 12.9987C8.00996 12.9987 9.39756 12.4863 10.5008 11.6239V12.1332C10.5008 12.3332 10.5789 12.5238 10.7195 12.6644L13.8354 15.7797C14.1292 16.0734 14.6042 16.0734 14.8948 15.7797L15.7793 14.8954C16.0731 14.6017 16.0731 14.1267 15.7824 13.833ZM6.50048 10.499C4.29094 10.499 2.50018 8.71165 2.50018 6.49937C2.50018 4.29021 4.28781 2.49976 6.50048 2.49976C8.71001 2.49976 10.5008 4.28708 10.5008 6.49937C10.5008 8.70852 8.71314 10.499 6.50048 10.499Z" fill="var(--color-text)"></path></svg></label><input type="text" id="tsd-search-field" aria-label="Search"/></div>
+<ul class="results">
+<li class="state loading">Preparing search index...</li>
+<li class="state failure">The search index is not available</li></ul><a href="index.html" class="title">React Native Stone POS</a></div>
+<div class="table-cell" id="tsd-widgets"><a href="#" class="tsd-widget menu no-caption" data-toggle="menu" aria-label="Menu"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="3" width="14" height="2" fill="var(--color-text)"></rect><rect x="1" y="7" width="14" height="2" fill="var(--color-text)"></rect><rect x="1" y="11" width="14" height="2" fill="var(--color-text)"></rect></svg></a></div></div></header>
+<div class="container container-main">
+<div class="col-8 col-content">
+<div class="tsd-page-title">
+<h2>React Native Stone POS</h2></div>
+<div class="tsd-panel tsd-typography">
+<a href="#react-native-stone-pos" id="react-native-stone-pos" style="color: inherit; text-decoration: none;">
+  <h1>react-native-stone-pos</h1>
+</a>
+<p>Stone Android POS Native Module</p>
+
+<a href="#installation" id="installation" style="color: inherit; text-decoration: none;">
+  <h2>Installation</h2>
+</a>
+<p>Stone has a private packageCloud repository, so we need to have your token before hand in order to communicate with package cloud.</p>
+<p>So you have two options:</p>
+
+<a href="#environment-variable--project-properties" id="environment-variable--project-properties" style="color: inherit; text-decoration: none;">
+  <h3>Environment variable / Project properties</h3>
+</a>
+<p>We support both options, as adding the variables to your <code>gradle.properties</code> in your <code>android</code> folder, or setting it as a global environment variable. (This is useful when you are building it from CI)</p>
+<p>The most important variable you need is: <code>StonePos_packageCloudToken</code>. This variable is used to authenticate with Stone private package Cloud repo, so we can download our dependencies.</p>
+<p>Other variables you might want:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Default Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>StonePos_posMode</td>
+<td>pos</td>
+<td>Set this to anything other than <code>pos</code> to remove the <code>HAL</code> dependencies all together, this is useful if you are building an app to mobile devices other than the POS</td>
+</tr>
+<tr>
+<td>StonePos_includeIngenico</td>
+<td>true</td>
+<td>Set this to anything other than <code>true</code> to remove the <code>Ingenico</code> hal dependencies</td>
+</tr>
+<tr>
+<td>StonePos_includeSunmi</td>
+<td>true</td>
+<td>Set this to anything other than <code>true</code> to remove the <code>Sunmi</code> hal dependencies</td>
+</tr>
+<tr>
+<td>StonePos_includeGertec</td>
+<td>true</td>
+<td>Set this to anything other than <code>true</code> to remove the <code>Gertec</code> hal dependencies</td>
+</tr>
+</tbody></table>
+
+<a href="#install-steps" id="install-steps" style="color: inherit; text-decoration: none;">
+  <h4>Install Steps:</h4>
+</a>
+<pre><code class="language-sh"><span class="hl-0">npm install react-native-stone-pos</span>
+</code></pre>
+
+<a href="#android" id="android" style="color: inherit; text-decoration: none;">
+  <h3>Android</h3>
+</a>
+
+<a href="#you-need-to-do-this" id="you-need-to-do-this" style="color: inherit; text-decoration: none;">
+  <h4>YOU NEED TO DO THIS</h4>
+</a>
+<p>Edit <code>android/app/build.gradle</code> ( NOT <code>android/build.gradle</code> ) and add the following:</p>
+<pre><code class="language-gradle">apply from: &quot;../../node_modules/react-native-stone-pos/android/stone-repo.gradle&quot;
+</code></pre>
+<p>If you are building with the POS in mind, you will also need to apply this here:</p>
+<pre><code class="language-gradle">apply from: &quot;../../node_modules/react-native-stone-pos/android/dynamic-hal.gradle&quot;
+</code></pre>
+<p>This will enable the HAL modules of your choosing, or all of them as long as you are in POS mode, or the <code>StonePos_include*</code> variables are <code>true</code></p>
+
+<a href="#troubleshooting" id="troubleshooting" style="color: inherit; text-decoration: none;">
+  <h4>Troubleshooting</h4>
+</a>
+
+<a href="#manifest-merger-failed--attribute-applicationallowbackup-valuefalse" id="manifest-merger-failed--attribute-applicationallowbackup-valuefalse" style="color: inherit; text-decoration: none;">
+  <h5>Manifest merger failed : Attribute application@allowBackup value=(false)</h5>
+</a>
+<p>You might get an error when you are using the default React Native Manifest, which is:</p>
+<pre><code><span class="hl-1">Manifest</span><span class="hl-0"> </span><span class="hl-1">merger</span><span class="hl-0"> </span><span class="hl-2">failed</span><span class="hl-0"> : </span><span class="hl-1">Attribute</span><span class="hl-0"> </span><span class="hl-1">application</span><span class="hl-0">@</span><span class="hl-1">allowBackup</span><span class="hl-0"> </span><span class="hl-1">value</span><span class="hl-0">=(</span><span class="hl-3">false</span><span class="hl-0">) </span><span class="hl-1">from</span><span class="hl-0"> </span><span class="hl-1">AndroidManifest</span><span class="hl-0">.</span><span class="hl-1">xml</span><span class="hl-0">:</span><span class="hl-4">12</span><span class="hl-0">:</span><span class="hl-4">7</span><span class="hl-0">-</span><span class="hl-4">34</span><br/><span class="hl-0">      </span><span class="hl-1">is</span><span class="hl-0"> </span><span class="hl-1">also</span><span class="hl-0"> </span><span class="hl-1">present</span><span class="hl-0"> </span><span class="hl-1">at</span><span class="hl-0"> [</span><span class="hl-1">br</span><span class="hl-0">.</span><span class="hl-1">com</span><span class="hl-0">.</span><span class="hl-1">stone</span><span class="hl-0">:</span><span class="hl-1">stone</span><span class="hl-0">-</span><span class="hl-1">sdk</span><span class="hl-0">:</span><span class="hl-4">4.1</span><span class="hl-0">.</span><span class="hl-4">1</span><span class="hl-0">] </span><span class="hl-1">AndroidManifest</span><span class="hl-0">.</span><span class="hl-1">xml</span><span class="hl-0">:</span><span class="hl-4">20</span><span class="hl-0">:</span><span class="hl-4">9</span><span class="hl-0">-</span><span class="hl-4">35</span><span class="hl-0"> </span><span class="hl-1">value</span><span class="hl-0">=(</span><span class="hl-3">true</span><span class="hl-0">).</span><br/><span class="hl-0">      </span><span class="hl-2">Suggestion</span><span class="hl-0">: </span><span class="hl-1">add</span><span class="hl-0"> </span><span class="hl-5">&#39;tools:replace=&quot;android:allowBackup&quot;&#39;</span><span class="hl-0"> </span><span class="hl-1">to</span><span class="hl-0"> &lt;</span><span class="hl-1">application</span><span class="hl-0">&gt; </span><span class="hl-1">element</span><span class="hl-0"> </span><span class="hl-1">at</span><span class="hl-0"> </span><span class="hl-1">AndroidManifest</span><span class="hl-0">.</span><span class="hl-1">xml</span><span class="hl-0">:</span><span class="hl-4">7</span><span class="hl-0">:</span><span class="hl-4">5</span><span class="hl-0">-</span><span class="hl-4">12</span><span class="hl-0">:</span><span class="hl-4">19</span><span class="hl-0"> </span><span class="hl-1">to</span><span class="hl-0"> </span><span class="hl-1">override</span><span class="hl-0">.</span>
+</code></pre>
+<p>So, as per the suggestion, you can add <code>tools:replace=&quot;android:allowBackup&quot;</code> to your <code>&lt;application&gt;</code> element at your <code>android/app/src/main/AndroidManifest.xml</code> file, like this:</p>
+<pre><code class="language-xml"><span class="hl-6">&lt;</span><span class="hl-7">manifest</span><span class="hl-0"> </span><span class="hl-8">xmlns:android</span><span class="hl-0">=</span><span class="hl-9">&quot;http://schemas.android.com/apk/res/android&quot;</span><br/><span class="hl-0">  </span><span class="hl-8">package</span><span class="hl-0">=</span><span class="hl-9">&quot;com.yourapp.here&quot;</span><span class="hl-6">&gt;</span><br/><br/><span class="hl-0">    </span><span class="hl-6">&lt;</span><span class="hl-7">uses-permission</span><span class="hl-0"> </span><span class="hl-8">android:name</span><span class="hl-0">=</span><span class="hl-9">&quot;android.permission.INTERNET&quot;</span><span class="hl-0"> </span><span class="hl-6">/&gt;</span><br/><span class="hl-0">    </span><span class="hl-6">&lt;</span><span class="hl-7">uses-permission</span><span class="hl-0"> </span><span class="hl-8">android:name</span><span class="hl-0">=</span><span class="hl-9">&quot;android.permission.SYSTEM_ALERT_WINDOW&quot;</span><span class="hl-6">/&gt;</span><br/><span class="hl-0">    </span><span class="hl-6">&lt;</span><span class="hl-7">uses-permission</span><span class="hl-0"> </span><span class="hl-8">android:name</span><span class="hl-0">=</span><span class="hl-9">&quot;android.permission.ACCESS_NETWORK_STATE&quot;</span><span class="hl-6">/&gt;</span><br/><br/><span class="hl-0">    </span><span class="hl-6">&lt;</span><span class="hl-7">application</span><br/><span class="hl-0">      </span><span class="hl-8">android:name</span><span class="hl-0">=</span><span class="hl-9">&quot;.MainApplication&quot;</span><br/><span class="hl-0">      </span><span class="hl-8">android:label</span><span class="hl-0">=</span><span class="hl-9">&quot;@string/app_name&quot;</span><br/><span class="hl-0">      </span><span class="hl-8">android:icon</span><span class="hl-0">=</span><span class="hl-9">&quot;@mipmap/ic_launcher&quot;</span><br/><span class="hl-0">      </span><span class="hl-8">android:allowBackup</span><span class="hl-0">=</span><span class="hl-9">&quot;true&quot;</span><br/><span class="hl-0">      </span><span class="hl-8">tools:replace</span><span class="hl-0">=</span><span class="hl-9">&quot;android:allowBackup&quot;</span><br/><span class="hl-0">      </span><span class="hl-8">android:theme</span><span class="hl-0">=</span><span class="hl-9">&quot;@style/AppTheme&quot;</span><span class="hl-6">&gt;</span><br/><span class="hl-0">      </span><span class="hl-6">&lt;</span><span class="hl-7">activity</span><br/><span class="hl-0">        </span><span class="hl-8">android:name</span><span class="hl-0">=</span><span class="hl-9">&quot;.MainActivity&quot;</span><br/><span class="hl-0">        </span><span class="hl-8">android:label</span><span class="hl-0">=</span><span class="hl-9">&quot;@string/app_name&quot;</span><br/><span class="hl-0">        </span><span class="hl-8">android:configChanges</span><span class="hl-0">=</span><span class="hl-9">&quot;keyboard|keyboardHidden|orientation|screenSize|uiMode&quot;</span><br/><span class="hl-0">        </span><span class="hl-8">android:launchMode</span><span class="hl-0">=</span><span class="hl-9">&quot;singleTask&quot;</span><br/><span class="hl-0">        </span><span class="hl-8">android:windowSoftInputMode</span><span class="hl-0">=</span><span class="hl-9">&quot;adjustResize&quot;</span><span class="hl-6">&gt;</span><br/><span class="hl-0">        </span><span class="hl-6">&lt;</span><span class="hl-7">intent-filter</span><span class="hl-6">&gt;</span><br/><span class="hl-0">            </span><span class="hl-6">&lt;</span><span class="hl-7">action</span><span class="hl-0"> </span><span class="hl-8">android:name</span><span class="hl-0">=</span><span class="hl-9">&quot;android.intent.action.MAIN&quot;</span><span class="hl-0"> </span><span class="hl-6">/&gt;</span><br/><span class="hl-0">            </span><span class="hl-6">&lt;</span><span class="hl-7">category</span><span class="hl-0"> </span><span class="hl-8">android:name</span><span class="hl-0">=</span><span class="hl-9">&quot;android.intent.category.LAUNCHER&quot;</span><span class="hl-0"> </span><span class="hl-6">/&gt;</span><br/><span class="hl-0">        </span><span class="hl-6">&lt;/</span><span class="hl-7">intent-filter</span><span class="hl-6">&gt;</span><br/><span class="hl-0">      </span><span class="hl-6">&lt;/</span><span class="hl-7">activity</span><span class="hl-6">&gt;</span><br/><span class="hl-0">    </span><span class="hl-6">&lt;/</span><span class="hl-7">application</span><span class="hl-6">&gt;</span><br/><span class="hl-6">&lt;/</span><span class="hl-7">manifest</span><span class="hl-6">&gt;</span>
+</code></pre>
+
+<a href="#more-than-one-file-was-found-with-os-independent-path-39meta-infclient_releasekotlin_module39" id="more-than-one-file-was-found-with-os-independent-path-39meta-infclient_releasekotlin_module39" style="color: inherit; text-decoration: none;">
+  <h5>More than one file was found with OS independent path &#39;META-INF/client_release.kotlin_module&#39;</h5>
+</a>
+<p>If you get this error:</p>
+<pre><code><span class="hl-1">More</span><span class="hl-0"> </span><span class="hl-1">than</span><span class="hl-0"> </span><span class="hl-1">one</span><span class="hl-0"> </span><span class="hl-1">file</span><span class="hl-0"> </span><span class="hl-1">was</span><span class="hl-0"> </span><span class="hl-1">found</span><span class="hl-0"> </span><span class="hl-10">with</span><span class="hl-0"> </span><span class="hl-11">OS</span><span class="hl-0"> </span><span class="hl-1">independent</span><span class="hl-0"> </span><span class="hl-1">path</span><span class="hl-0"> </span><span class="hl-5">&#39;META-INF/client_release.kotlin_module&#39;</span>
+</code></pre>
+<p>Try modifying <code>android/app/build.gradle</code> and add this inside the <code>android</code> section:</p>
+<pre><code class="language-gradle">packagingOptions {
+  exclude &#39;META-INF/api_release.kotlin_module&#39;
+  exclude &#39;META-INF/client_release.kotlin_module&#39;
+}
+</code></pre>
+
+<a href="#usage" id="usage" style="color: inherit; text-decoration: none;">
+  <h2>Usage</h2>
+</a>
+<pre><code class="language-js"><span class="hl-10">import</span><span class="hl-0"> </span><span class="hl-3">*</span><span class="hl-0"> </span><span class="hl-10">as</span><span class="hl-0"> </span><span class="hl-1">StonePOS</span><span class="hl-0"> </span><span class="hl-10">from</span><span class="hl-0"> </span><span class="hl-5">&#39;react-native-stone-pos&#39;</span><span class="hl-0">;</span><br/><br/><span class="hl-12">// ...</span><br/><br/><span class="hl-3">const</span><span class="hl-0"> </span><span class="hl-11">isRunningInPOS</span><span class="hl-0"> = </span><span class="hl-1">StonePOS</span><span class="hl-0">.</span><span class="hl-11">IS_RUNNING_IN_POS</span><span class="hl-0">;</span><br/><span class="hl-3">const</span><span class="hl-0"> </span><span class="hl-11">activationResult</span><span class="hl-0"> = </span><span class="hl-10">await</span><span class="hl-0"> </span><span class="hl-1">StonePOS</span><span class="hl-0">.</span><span class="hl-13">initSDK</span><span class="hl-0">(</span><span class="hl-5">&#39;My Awesome App&#39;</span><span class="hl-0">);</span><br/><br/><span class="hl-10">if</span><span class="hl-0"> (!</span><span class="hl-1">isRunningInPos</span><span class="hl-0">) {</span><br/><span class="hl-0">  </span><span class="hl-12">//Ask user to select the bluetooth pinpad (use any library you like), and then you can connect using:</span><br/><span class="hl-0">  </span><span class="hl-3">const</span><span class="hl-0"> </span><span class="hl-11">pinpadConnectResult</span><span class="hl-0"> = </span><span class="hl-10">await</span><span class="hl-0"> </span><span class="hl-1">StonePOS</span><span class="hl-0">.</span><span class="hl-13">connectToPinPad</span><span class="hl-0">(</span><br/><span class="hl-0">    </span><span class="hl-5">&#39;My beauty pinpad&#39;</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-5">&#39;00:11:22:33:44&#39;</span><br/><span class="hl-0">  );</span><br/><span class="hl-0">}</span>
+</code></pre>
+
+<a href="#example" id="example" style="color: inherit; text-decoration: none;">
+  <h2>Example</h2>
+</a>
+<p>Checkout the <a href="https://github.com/EightSystems/react-native-stone-pos/tree/main/example">example project</a>, which was made with the intention of running all the required homologation tests. There you will see how to void, execute a charge, print, and so on.</p>
+
+<a href="#contributing" id="contributing" style="color: inherit; text-decoration: none;">
+  <h2>Contributing</h2>
+</a>
+<p>See the <a href="CONTRIBUTING.md">contributing guide</a> to learn how to contribute to the repository and the development workflow.</p>
+
+<a href="#license" id="license" style="color: inherit; text-decoration: none;">
+  <h2>License</h2>
+</a>
+<p>MIT</p>
+</div></div>
+<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+<div class="tsd-navigation settings">
+<details class="tsd-index-accordion"><summary class="tsd-accordion-summary">
+<h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4.93896 8.531L12 15.591L19.061 8.531L16.939 6.409L12 11.349L7.06098 6.409L4.93896 8.531Z" fill="var(--color-text)"></path></svg> Settings</h3></summary>
+<div class="tsd-accordion-details">
+<div class="tsd-filter-visibility">
+<h4 class="uppercase">Member Visibility</h4><form>
+<ul id="tsd-filter-options">
+<li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-protected" name="protected"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Protected</span></label></li>
+<li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-private" name="private"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Private</span></label></li>
+<li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-inherited" name="inherited" checked/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Inherited</span></label></li>
+<li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-external" name="external"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>External</span></label></li></ul></form></div>
+<div class="tsd-theme-toggle">
+<h4 class="uppercase">Theme</h4><select id="theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></div></div></details></div>
+<nav class="tsd-navigation primary">
+<details class="tsd-index-accordion" open><summary class="tsd-accordion-summary">
+<h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4.93896 8.531L12 15.591L19.061 8.531L16.939 6.409L12 11.349L7.06098 6.409L4.93896 8.531Z" fill="var(--color-text)"></path></svg> Modules</h3></summary>
+<div class="tsd-accordion-details">
+<ul>
+<li class="current selected"><a href="modules.html">React <wbr/>Native <wbr/>Stone POS</a>
+<ul></ul></li></ul></div></details></nav>
+<nav class="tsd-navigation secondary menu-sticky">
+<ul>
+<li class="tsd-kind-enum"><a href="enums/MifareKeyType.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><rect fill="var(--color-icon-background)" stroke="var(--color-ts-enum)" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="6" id="icon-8-path"></rect><path d="M9.45 16V7.24H14.49V8.224H10.518V10.936H14.07V11.908H10.518V15.016H14.49V16H9.45Z" fill="var(--color-text)" id="icon-8-text"></path></svg>Mifare<wbr/>Key<wbr/>Type</a></li>
+<li class="tsd-kind-type-alias"><a href="types/AddressModelType.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><rect fill="var(--color-icon-background)" stroke="var(--color-ts)" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="6" id="icon-4194304-path"></rect><path d="M11.31 16V8.224H8.91V7.24H14.79V8.224H12.39V16H11.31Z" fill="var(--color-text)" id="icon-4194304-text"></path></svg>Address<wbr/>Model<wbr/>Type</a></li>
+<li class="tsd-kind-type-alias"><a href="types/InstalmentTransactionType.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-4194304-path"></use><use href="#icon-4194304-text"></use></svg>Instalment<wbr/>Transaction<wbr/>Type</a></li>
+<li class="tsd-kind-type-alias"><a href="types/MailContact.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-4194304-path"></use><use href="#icon-4194304-text"></use></svg>Mail<wbr/>Contact</a></li>
+<li class="tsd-kind-type-alias"><a href="types/ProgressEventName.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-4194304-path"></use><use href="#icon-4194304-text"></use></svg>Progress<wbr/>Event<wbr/>Name</a></li>
+<li class="tsd-kind-type-alias"><a href="types/ReceiptType.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-4194304-path"></use><use href="#icon-4194304-text"></use></svg>Receipt<wbr/>Type</a></li>
+<li class="tsd-kind-type-alias"><a href="types/TransSelectedInfoType.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-4194304-path"></use><use href="#icon-4194304-text"></use></svg>Trans<wbr/>Selected<wbr/>Info<wbr/>Type</a></li>
+<li class="tsd-kind-type-alias"><a href="types/TransactionSetupType.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-4194304-path"></use><use href="#icon-4194304-text"></use></svg>Transaction<wbr/>Setup<wbr/>Type</a></li>
+<li class="tsd-kind-type-alias"><a href="types/TransactionType.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-4194304-path"></use><use href="#icon-4194304-text"></use></svg>Transaction<wbr/>Type</a></li>
+<li class="tsd-kind-type-alias"><a href="types/TransactionTypeInfoType.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-4194304-path"></use><use href="#icon-4194304-text"></use></svg>Transaction<wbr/>Type<wbr/>Info<wbr/>Type</a></li>
+<li class="tsd-kind-type-alias"><a href="types/UserModelType.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-4194304-path"></use><use href="#icon-4194304-text"></use></svg>User<wbr/>Model<wbr/>Type</a></li>
+<li class="tsd-kind-variable"><a href="variables/IS_RUNNING_IN_POS.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><rect fill="var(--color-icon-background)" stroke="var(--color-ts-variable)" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="6" id="icon-32-path"></rect><path d="M11.106 16L8.85 7.24H9.966L11.454 13.192C11.558 13.608 11.646 13.996 11.718 14.356C11.79 14.708 11.842 14.976 11.874 15.16C11.906 14.976 11.954 14.708 12.018 14.356C12.09 13.996 12.178 13.608 12.282 13.192L13.758 7.24H14.85L12.582 16H11.106Z" fill="var(--color-text)" id="icon-32-text"></path></svg>IS_<wbr/>RUNNING_<wbr/>IN_<wbr/>POS</a></li>
+<li class="tsd-kind-variable"><a href="variables/STONE_SDK_VERSION.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-32-path"></use><use href="#icon-32-text"></use></svg>STONE_<wbr/>SDK_<wbr/>VERSION</a></li>
+<li class="tsd-kind-function"><a href="functions/activateCode.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><rect fill="var(--color-icon-background)" stroke="var(--color-ts-function)" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="6" id="icon-64-path"></rect><path d="M9.39 16V7.24H14.55V8.224H10.446V11.128H14.238V12.112H10.47V16H9.39Z" fill="var(--color-text)" id="icon-64-text"></path></svg>activate<wbr/>Code</a></li>
+<li class="tsd-kind-function"><a href="functions/cancelRunningTaskMakeTransaction.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-64-path"></use><use href="#icon-64-text"></use></svg>cancel<wbr/>Running<wbr/>Task<wbr/>Make<wbr/>Transaction</a></li>
+<li class="tsd-kind-function"><a href="functions/captureTransaction.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-64-path"></use><use href="#icon-64-text"></use></svg>capture<wbr/>Transaction</a></li>
+<li class="tsd-kind-function"><a href="functions/connectToPinPad.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-64-path"></use><use href="#icon-64-text"></use></svg>connect<wbr/>To<wbr/>Pin<wbr/>Pad</a></li>
+<li class="tsd-kind-function"><a href="functions/deactivateCode.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-64-path"></use><use href="#icon-64-text"></use></svg>deactivate<wbr/>Code</a></li>
+<li class="tsd-kind-function"><a href="functions/displayMessageInPinPad.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-64-path"></use><use href="#icon-64-text"></use></svg>display<wbr/>Message<wbr/>In<wbr/>Pin<wbr/>Pad</a></li>
+<li class="tsd-kind-function"><a href="functions/fetchTransactionsForCard.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-64-path"></use><use href="#icon-64-text"></use></svg>fetch<wbr/>Transactions<wbr/>For<wbr/>Card</a></li>
+<li class="tsd-kind-function"><a href="functions/findTransactionWithAuthorizationCode.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-64-path"></use><use href="#icon-64-text"></use></svg>find<wbr/>Transaction<wbr/>With<wbr/>Authorization<wbr/>Code</a></li>
+<li class="tsd-kind-function"><a href="functions/findTransactionWithId.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-64-path"></use><use href="#icon-64-text"></use></svg>find<wbr/>Transaction<wbr/>With<wbr/>Id</a></li>
+<li class="tsd-kind-function"><a href="functions/findTransactionWithInitiatorTransactionKey.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-64-path"></use><use href="#icon-64-text"></use></svg>find<wbr/>Transaction<wbr/>With<wbr/>Initiator<wbr/>Transaction<wbr/>Key</a></li>
+<li class="tsd-kind-function"><a href="functions/getActivatedCodes.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-64-path"></use><use href="#icon-64-text"></use></svg>get<wbr/>Activated<wbr/>Codes</a></li>
+<li class="tsd-kind-function"><a href="functions/getAllTransactionsOrderByIdDesc.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-64-path"></use><use href="#icon-64-text"></use></svg>get<wbr/>All<wbr/>Transactions<wbr/>Order<wbr/>By<wbr/>Id<wbr/>Desc</a></li>
+<li class="tsd-kind-function"><a href="functions/getLastTransaction.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-64-path"></use><use href="#icon-64-text"></use></svg>get<wbr/>Last<wbr/>Transaction</a></li>
+<li class="tsd-kind-function"><a href="functions/initSDK.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-64-path"></use><use href="#icon-64-text"></use></svg>initSDK</a></li>
+<li class="tsd-kind-function"><a href="functions/makeTransaction.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-64-path"></use><use href="#icon-64-text"></use></svg>make<wbr/>Transaction</a></li>
+<li class="tsd-kind-function"><a href="functions/mifareAuthenticateSector.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-64-path"></use><use href="#icon-64-text"></use></svg>mifare<wbr/>Authenticate<wbr/>Sector</a></li>
+<li class="tsd-kind-function"><a href="functions/mifareDetectCard.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-64-path"></use><use href="#icon-64-text"></use></svg>mifare<wbr/>Detect<wbr/>Card</a></li>
+<li class="tsd-kind-function"><a href="functions/mifareReadBlock.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-64-path"></use><use href="#icon-64-text"></use></svg>mifare<wbr/>Read<wbr/>Block</a></li>
+<li class="tsd-kind-function"><a href="functions/mifareWriteBlock.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-64-path"></use><use href="#icon-64-text"></use></svg>mifare<wbr/>Write<wbr/>Block</a></li>
+<li class="tsd-kind-function"><a href="functions/printHTMLInPOSPrinter.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-64-path"></use><use href="#icon-64-text"></use></svg>printHTMLInPOSPrinter</a></li>
+<li class="tsd-kind-function"><a href="functions/printReceiptInPOSPrinter.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-64-path"></use><use href="#icon-64-text"></use></svg>print<wbr/>Receipt<wbr/>InPOSPrinter</a></li>
+<li class="tsd-kind-function"><a href="functions/reversePendingTransactions.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-64-path"></use><use href="#icon-64-text"></use></svg>reverse<wbr/>Pending<wbr/>Transactions</a></li>
+<li class="tsd-kind-function"><a href="functions/sendTransactionReceiptMail.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-64-path"></use><use href="#icon-64-text"></use></svg>send<wbr/>Transaction<wbr/>Receipt<wbr/>Mail</a></li>
+<li class="tsd-kind-function"><a href="functions/useNativeEventListener.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-64-path"></use><use href="#icon-64-text"></use></svg>use<wbr/>Native<wbr/>Event<wbr/>Listener</a></li>
+<li class="tsd-kind-function"><a href="functions/voidTransaction.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-64-path"></use><use href="#icon-64-text"></use></svg>void<wbr/>Transaction</a></li></ul></nav></div></div>
+<div class="overlay"></div><script src="assets/main.js"></script></body></html>
