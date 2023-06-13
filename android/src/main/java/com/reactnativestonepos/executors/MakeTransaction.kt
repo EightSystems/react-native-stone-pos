@@ -13,6 +13,7 @@ import com.reactnativestonepos.helpers.ConversionHelpers
 import com.reactnativestonepos.helpers.StoneTransactionHelpers
 import com.reactnativestonepos.helpers.writableMapOf
 import stone.application.enums.Action
+import stone.application.enums.TransactionStatusEnum
 import stone.application.interfaces.StoneActionCallback
 import stone.database.transaction.TransactionDAO
 import stone.providers.BaseTransactionProvider
@@ -127,10 +128,17 @@ class MakeTransaction(
         }
 
         override fun onError() {
-          promise.reject(
-            "405",
-            "Generic Error - Transaction Failed [onError from Provider] - Check adb log output"
-          )
+          if (transactionProvider.transactionStatus !== TransactionStatusEnum.UNKNOWN) {
+            promise.reject(
+              transactionProvider.transactionStatus.name,
+              transactionProvider.messageFromAuthorize
+            )
+          } else {
+            promise.reject(
+              "405",
+              "Generic Error - Transaction Failed [onError from Provider] - Check adb log output"
+            )
+          }
         }
 
         override fun onStatusChanged(action: Action?) {
@@ -140,6 +148,8 @@ class MakeTransaction(
               progressCallbackEventName, writableMapOf(
                 "initiatorTransactionKey" to transactionObject?.initiatorTransactionKey,
                 "status" to action?.name,
+                "transactionStatus" to transactionProvider.transactionStatus.name,
+                "messageFromAuthorize" to transactionProvider.messageFromAuthorize,
                 "qrCode" to if (action == Action.TRANSACTION_WAITING_QRCODE_SCAN) transactionObject?.qrCode?.toEncodedString() else null
               )
             )

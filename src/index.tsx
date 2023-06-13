@@ -253,9 +253,9 @@ export function reversePendingTransactions(
   progressCallbackEventName: ProgressEventName = 'REVERSE_PENDING_TRANSACTIONS_PROGRESS'
 ): Promise<boolean> {
   return StonePos.reversePendingTransactions(
-    useDefaultUI,
     dialogMessage,
     dialogTitle,
+    useDefaultUI,
     progressCallbackEventName
   );
 }
