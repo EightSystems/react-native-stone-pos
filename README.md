@@ -116,7 +116,7 @@ import * as StonePOS from 'react-native-stone-pos';
 // ...
 
 const isRunningInPOS = StonePOS.IS_RUNNING_IN_POS;
-const activationResult = await StonePOS.initSDK('My Awesome App');
+const activationResult = await StonePOS.initSDK('My Awesome App', '12345-PIX-KEY', '54321-PIX-SECRET');
 
 if (!isRunningInPos) {
   //Ask user to select the bluetooth pinpad (use any library you like), and then you can connect using:
