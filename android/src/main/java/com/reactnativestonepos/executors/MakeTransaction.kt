@@ -14,6 +14,7 @@ import com.reactnativestonepos.helpers.StoneTransactionHelpers
 import com.reactnativestonepos.helpers.writableMapOf
 import stone.application.enums.Action
 import stone.application.enums.TransactionStatusEnum
+import stone.application.enums.TypeOfTransactionEnum
 import stone.application.interfaces.StoneActionCallback
 import stone.database.transaction.TransactionDAO
 import stone.providers.BaseTransactionProvider
@@ -73,6 +74,12 @@ class MakeTransaction(
       }
 
       val transactionObject = ConversionHelpers.convertReadableMapToTransaction(transactionSetup)
+
+      if (transactionObject.typeOfTransaction == TypeOfTransactionEnum.PIX) {
+        if (!StonePosModule.hasPixKeysProvided()) {
+          throw Exception("You are trying to make a PIX transaction but didn't provide the needed keys, check the initSDK method");
+        }
+      }
 
       val transactionProvider =
         if (StoneTransactionHelpers.isRunningInPOS(reactApplicationContext)) {

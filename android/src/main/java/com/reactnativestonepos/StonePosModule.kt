@@ -43,6 +43,10 @@ class StonePosModule(reactContext: ReactApplicationContext) :
     fun userListCount(): Int {
       return if (currentUserList != null) currentUserList!!.size else 0
     }
+
+    fun hasPixKeysProvided(): Boolean {
+      return !(STONE_QRCODE_PROVIDER_ID.isNullOrEmpty() || STONE_QRCODE_AUTHORIZATION.isNullOrEmpty())
+    }
   }
 
   override fun getName(): String {

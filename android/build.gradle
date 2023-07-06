@@ -129,7 +129,7 @@ repositories {
   }
 }
 
-def stone_sdk_version = "4.5.3"
+def stone_sdk_version = "4.5.6"
 def kotlin_version = getExtOrDefault('kotlinVersion')
 
 dependencies {
