@@ -1,4 +1,4 @@
-def stone_sdk_version = "4.7.3"
+def stone_sdk_version = "4.7.7"
 
 String posMode = rootProject.ext.has('posMode') ? rootProject.ext.get('posMode') : (
   project.properties.containsKey('StonePos_posMode') ?
