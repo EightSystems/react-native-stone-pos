@@ -1,4 +1,4 @@
-def stone_sdk_version = "4.7.7"
+def stone_sdk_version = "4.8.0"
 
 String posMode = rootProject.ext.has('posMode') ? rootProject.ext.get('posMode') : (
   project.properties.containsKey('StonePos_posMode') ?
@@ -20,6 +20,11 @@ String includeGertec = rootProject.ext.has('includeGertec') ? rootProject.ext.ge
     project.properties['StonePos_includeGertec'] : (System.getenv('StonePos_includeGertec') ? System.getenv('StonePos_includeGertec') : 'true')
 )
 
+String includePositivo = rootProject.ext.has('includePositivo') ? rootProject.ext.get('includePositivo') : (
+  project.properties.containsKey('StonePos_includePositivo') ?
+    project.properties['StonePos_includePositivo'] : (System.getenv('StonePos_includePositivo') ? System.getenv('StonePos_includePositivo') : 'true')
+)
+
 if ( posMode.isEmpty() ) {
   throw new RuntimeException("You need to set the StonePos_posMode either in gradle.properties or in your env")
 }
@@ -38,6 +43,12 @@ if ( posMode.equalsIgnoreCase('pos') ) {
   if ( includeGertec.equalsIgnoreCase('true') ) {
     dependencies {
       implementation "br.com.stone:stone-sdk-posandroid-gertec:$stone_sdk_version"
+    }
+  }
+
+  if ( includePositivo.equalsIgnoreCase('true') ) {
+    dependencies {
+      implementation "br.com.stone:stone-sdk-posandroid-positivo:$stone_sdk_version"
     }
   }
 }

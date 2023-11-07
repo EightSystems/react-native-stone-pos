@@ -22,6 +22,7 @@ Other variables you might want:
 | StonePos_includeIngenico | true          | Set this to anything other than `true` to remove the `Ingenico` hal dependencies                                                                                    |
 | StonePos_includeSunmi    | true          | Set this to anything other than `true` to remove the `Sunmi` hal dependencies                                                                                       |
 | StonePos_includeGertec   | true          | Set this to anything other than `true` to remove the `Gertec` hal dependencies                                                                                      |
+| StonePos_includePositivo   | true          | Set this to anything other than `true` to remove the `Positivo` hal dependencies                                                                                      |
 
 #### Install Steps:
 
