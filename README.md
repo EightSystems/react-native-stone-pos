@@ -50,6 +50,10 @@ This will enable the HAL modules of your choosing, or all of them as long as you
 
 #### Troubleshooting
 
+##### MinSDK
+
+You need to use minSDK to 22, otherwise it will fail (Stone Requires this)
+
 ##### Manifest merger failed : Attribute application@allowBackup value=(false)
 
 You might get an error when you are using the default React Native Manifest, which is:
