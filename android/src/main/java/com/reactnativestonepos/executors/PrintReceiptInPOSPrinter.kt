@@ -48,7 +48,7 @@ class PrintReceiptInPOSPrinter(
               currentActivity!!
             } else {
               reactApplicationContext
-            }, transactionAtk, if (receiptType == "CLIENT") {
+            }, transactionObject.idFromBase, if (receiptType == "CLIENT") {
               ReceiptType.CLIENT
             } else {
               ReceiptType.MERCHANT

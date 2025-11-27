@@ -1,20 +1,29 @@
-apply from:"./stone-repo.gradle"
 
 buildscript {
   // Buildscript is evaluated before everything else so we can't use getExtOrDefault
   def kotlin_version = rootProject.ext.has('kotlinVersion') ? rootProject.ext.get('kotlinVersion') : project.properties['StonePos_kotlinVersion']
 
   repositories {
+    gradlePluginPortal()
     google()
     mavenCentral()
   }
 
   dependencies {
-    classpath 'com.android.tools.build:gradle:3.5.3'
+    classpath 'com.android.tools.build:gradle:7.4.2'
     // noinspection DifferentKotlinGradleVersion
     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
   }
 }
+
+plugins {
+  id 'org.jetbrains.kotlin.jvm' version '1.9.0' apply false
+
+  id 'com.android.library' version '7.4.2' apply false
+  id 'org.jetbrains.kotlin.android' version '1.9.0' apply false
+}
+
+apply from:"./stone-repo.gradle"
 
 def isNewArchitectureEnabled() {
   return rootProject.hasProperty("newArchEnabled") &&  rootProject.getProperty("newArchEnabled") == "true"
@@ -27,9 +36,6 @@ def getExtOrDefault(name) {
 def getExtOrIntegerDefault(name) {
   return rootProject.ext.has(name) ? rootProject.ext.get(name) : (project.properties['StonePos_' + name]).toInteger()
 }
-
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
 
 if (isNewArchitectureEnabled()) {
   apply plugin: 'com.facebook.react'
@@ -129,7 +135,7 @@ repositories {
   }
 }
 
-def stone_sdk_version = "4.8.7"
+def stone_sdk_version = "4.12.0"
 def kotlin_version = getExtOrDefault('kotlinVersion')
 
 dependencies {
